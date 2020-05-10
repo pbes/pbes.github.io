@@ -6,10 +6,19 @@
     <description>Recent content on Peter Bessenyei</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 09 May 2020 15:53:34 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 10 May 2020 09:53:34 +0200</lastBuildDate>
     
 	<atom:link href="https://pbes.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>First post</title>
+      <link>https://pbes.github.io/posts/first-post/</link>
+      <pubDate>Sun, 10 May 2020 09:53:34 +0200</pubDate>
+      
+      <guid>https://pbes.github.io/posts/first-post/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve always wanted to write a technical blog, but I had almost no time for it. Our current situation with COVID-19 pandemic made it possible. I started and I&amp;rsquo;ll start a few side projects that. So, let&amp;rsquo;s get started&lt;/p&gt;</description>
+    </item>
     
   </channel>
 </rss>
