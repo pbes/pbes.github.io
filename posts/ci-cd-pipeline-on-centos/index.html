@@ -50,7 +50,7 @@
                     </h1>
                     <h2 class="headline">
                     Sep 26, 2020 18:40
-                    · 2175 words
+                    · 2177 words
                     · 11 minute read
                       <span class="tags">
                       
@@ -512,13 +512,37 @@ systemctl restart nginx
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">firewall-cmd --zone<span style="color:#f92672">=</span>public --permanent --add-port<span style="color:#f92672">=</span>80/tcp
 firewall-cmd --reload
 </code></pre></div><h2 id="part-9---summary">Part 9 - Summary</h2>
-<p>Let&rsquo;s wrap up what we have running on this server:
-|Application|Port                  |Config                                 |Data                                 |
-|&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|
-|Wildfly    |8080: app, 9990: admin|/opt/wildfly/standalone/configuration  |/opt/wildfly/standalone/deployments  |
-|Nexus      |8081                  |/opt/nexus/bin                         |/srv/nexus                           |
-|Jenkins    |8082                  |/etc/sysconfig/jenkins                 |/srv/jenkins                         |
-|GitLab     |8888                  |/srv/gitlab/config                     |/srv/gitlab/data                     |</p>
+<p>Let&rsquo;s wrap up what we have running on this server:</p>
+<ul>
+<li>WildFly:
+<ul>
+<li>Port: 8080, 9990</li>
+<li>Config: <code>/opt/wildfly/standalone/configuration</code></li>
+<li>Data: <code>/opt/wildfly/standalone/deployments</code></li>
+</ul>
+</li>
+<li>Nexus:
+<ul>
+<li>Port: 8081</li>
+<li>Config: <code>/opt/nexus</code></li>
+<li>Data: <code>/srv/nexus</code></li>
+</ul>
+</li>
+<li>Jenkins:
+<ul>
+<li>Port: 8082</li>
+<li>Config: <code>/etc/sysconfig/jenkins</code></li>
+<li>Data: <code>/srv/jenkins</code></li>
+</ul>
+</li>
+<li>GitLab:
+<ul>
+<li>Port: 8888</li>
+<li>Config: <code>/srv/gitlab/config</code></li>
+<li>Data: <code>/srv/gitlab/data</code></li>
+</ul>
+</li>
+</ul>
 <p>I would still recommend a different configuration, because I personally prefer gitlab-runner over Jenkins and Spring Boot (if Java is required) over WildFly (or any other application server), but I hope this post will help you in the future.</p>
                 </section>
             </article>
