@@ -6,10 +6,28 @@
     <description>Recent content in Posts on Peter Bessenyei</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 10 May 2020 09:53:34 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 26 Sep 2020 18:40:34 +0200</lastBuildDate>
     
 	<atom:link href="https://pbes.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Creating CI/CD pipeline on CentOS</title>
+      <link>https://pbes.github.io/posts/ci-cd-pipeline-on-centos/</link>
+      <pubDate>Sat, 26 Sep 2020 18:40:34 +0200</pubDate>
+      
+      <guid>https://pbes.github.io/posts/ci-cd-pipeline-on-centos/</guid>
+      <description>&lt;h1 id=&#34;creating-cicd-pipeline-on-centos&#34;&gt;Creating CI/CD pipeline on CentOS&lt;/h1&gt;
+&lt;p&gt;Last year I was working for a company and we had a project where I created a CI/CD pipeline for them. The leader of their IT operations really liked the result and the detailed documentation, but he left that company and contacted me on LinkedIn whether I could reproduce it for him for future reference.&lt;/p&gt;
+&lt;p&gt;If you follow along with this post, you&amp;rsquo;ll be able to install a CI/CD pipeline running on CentOS 7 for enterprise Java applications with the following items:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;WildFly&lt;/strong&gt;: to have a running TEST system on the same machine&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GitLab&lt;/strong&gt;: to store source codes locally&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Jenkins&lt;/strong&gt;: for continous integration&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Nexus&lt;/strong&gt;: to store the built artifacts and any 3rd party Java libraries&lt;/li&gt;
+&lt;li&gt;custom &lt;strong&gt;Maven configuration&lt;/strong&gt; that can be used by all of the company&amp;rsquo;s developers to access own Nexus repository&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>First post</title>
