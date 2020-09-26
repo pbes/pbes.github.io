@@ -50,7 +50,7 @@
                     </h1>
                     <h2 class="headline">
                     Sep 26, 2020 18:40
-                    · 2174 words
+                    · 2178 words
                     · 11 minute read
                       <span class="tags">
                       
@@ -515,10 +515,10 @@ firewall-cmd --reload
 <p>Let&rsquo;s wrap up what we have running on this server:
 |Application|Port|Config|Data|
 |&mdash;&mdash;&mdash;&ndash;|&mdash;-|&mdash;&mdash;|&mdash;-|
-|Wildfly|8080: app, 9990: admin|<code>/opt/wildfly/standalone/configuration</code>|<code>/opt/wildfly/standalone/deployments</code>|
-|Nexus|8081|<code>/opt/nexus/bin</code>|<code>/srv/nexus</code>|
-|Jenkins|8082|<code>/etc/sysconfig/jenkins</code>|<code>/srv/jenkins</code>|
-|GitLab|8888|<code>/srv/gitlab/config</code>|<code>/srv/gitlab/data</code>|</p>
+|Wildfly    |8080: app, 9990: admin|<code>/opt/wildfly/standalone/configuration</code>|<code>/opt/wildfly/standalone/deployments</code>|
+|Nexus      |8081|<code>/opt/nexus/bin</code>|<code>/srv/nexus</code>|
+|Jenkins    |8082|<code>/etc/sysconfig/jenkins</code>|<code>/srv/jenkins</code>|
+|GitLab     |8888|<code>/srv/gitlab/config</code>|<code>/srv/gitlab/data</code>|</p>
 <p>I hope this post will help you in the future. I would still recommend a different configuration, because I personally prefer gitlab-runner over Jenkins and Spring Boot (if Java is required) over WildFly (or any other application server). So, my dream build server would have the following items only:</p>
 <ul>
 <li>GitLab</li>
