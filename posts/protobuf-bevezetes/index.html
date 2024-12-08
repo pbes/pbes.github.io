@@ -15,7 +15,7 @@
 <p> Mindezek miatt érdemes megfontolni a bináris formátumok használatát, ha a tárhely és a sávszélesség kritikus tényezők az alkalmazásunkban. </p>
 <h2 id="mi-a-protobuf-és-hogyan-működik" class="text-2xl font-bold my-2"> Mi a Protobuf és hogyan működik? </h2>
 <p> A Protcol Buffer, röviden Protobuf a Google megoldása a bináris szerializációra. Nyelvfüggetlen, platform független technológia, amelynek célja, hogy az adatokat (pl Java objektumok) struktúrált formába alakítsa kisebb méretet elérve és gyorsabban mint a hagyományos formátumok (pl JSON vagy XML). </p>
-<span data-notion-identity="notion" data-notion-type="highlight" data-notion-color="yellow" data-notion-strokewidth="1.5"> IDE JÖN A KÉP </span>
+<p> <div src="/images/protobuf-bevezetes/protobuf.drawio.png" alt="Protobuf folyamat" class="flex flex-col gap-2 text-center"> <img class="w-full rounded-lg overflow-clip" src="/images/protobuf-bevezetes/protobuf.drawio.png?w=1024&#38;q=70" alt="Protobuf folyamat"> <span class="text-gray-400 font-normal text-sm">Protobuf folyamat</span> </div> </p>
 <p> A Protobuf használatához szükségünk van egy ún. <code>.proto</code> fájlra, amely a sémát írja le. Ezek egyszerű szöveges, technológiától független leírók. </p>
 <p> Itt egy példa: </p>
 <pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="proto"><code><span class="line"><span style="color:#D73A49">syntax</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> &quot;proto2&quot;</span><span style="color:#24292E">;</span></span>
