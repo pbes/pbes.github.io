@@ -1,0 +1,383 @@
+<!DOCTYPE html><html lang="en" class="text-zinc-800"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"><!-- Canonical URL --><link rel="canonical" href="https://pbes.github.io/posts/junit-extensions"><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script><!-- Primary Meta Tags --><title>JUnit extension-ök használata · pbes blog</title><meta name="title" content="JUnit extension-ök használata · pbes blog"><meta name="description" content="Ha fárasztónak és zavarónak érzed a teszt-osztályokban ismétlődő kódokat, akkor az extension-ök segíthetnek. Az extension-ökkel a tesztelési környezetet személyre szabhatjuk és a tesztek kódját egyszerűsíthetjük."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://pbes.github.io/posts/junit-extensions"><meta property="og:title" content="JUnit extension-ök használata · pbes blog"><meta property="og:description" content="Ha fárasztónak és zavarónak érzed a teszt-osztályokban ismétlődő kódokat, akkor az extension-ök segíthetnek. Az extension-ökkel a tesztelési környezetet személyre szabhatjuk és a tesztek kódját egyszerűsíthetjük."><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://pbes.github.io/posts/junit-extensions"><meta property="twitter:title" content="JUnit extension-ök használata · pbes blog"><meta property="twitter:description" content="Ha fárasztónak és zavarónak érzed a teszt-osztályokban ismétlődő kódokat, akkor az extension-ök segíthetnek. Az extension-ökkel a tesztelési környezetet személyre szabhatjuk és a tesztek kódját egyszerűsíthetjük."><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><link rel="stylesheet" href="/_astro/about.DLaMV3Qo.css">
+<link rel="stylesheet" href="/_astro/_slug_.D70-yzNw.css"><script type="module" src="/_astro/hoisted.Bk9VN7UM.js"></script>
+<script type="module" src="/_astro/page.BNYwb576.js"></script></head> <body> <div class="flex flex-col h-full mb-8 overflow-y-scroll antialiased"> <header class="sticky z-50 top-0 bg-white/80 backdrop-blur-xl transition-all select-none bg-gradient-to-b from-orange-50"> <div class="flex flex-row gap-8 items-center justify-between max-w-screen-md mx-auto h-24 px-4 sm:px-6"> <a href="/" class="flex flex-row items-center justify-center gap-2"> <img src="/avatar.jpg" alt="author avatar" class="w-10 rounded-full aspect-square"> <span class="text-orange-600 font-title font-black">pbes blog</span> </a> <div class="flex flex-row gap-4" id="menu-items"> <a href="/posts" target="_self" class="h-full text-sm hover:text-orange-700"> Bejegyzések </a><a href="/tags" target="_self" class="h-full text-sm hover:text-orange-700"> Címkék </a><a href="/date" target="_self" class="h-full text-sm hover:text-orange-700"> Archívum </a><a href="/about" target="_self" class="h-full text-sm hover:text-orange-700"> Rólam </a><a href="https://github.com/pbes" target="_blank" class="h-full text-sm hover:text-orange-700"> GitHub </a> </div> </div> </header> <div class="flex-auto">  <div class="flex flex-col gap-8 md:w-5/6 px-4 py-12 sm:px-8 mx-auto"> <div class="flex flex-col gap-6 items-center justify-center max-w-screen-sm mx-auto"> <h1 id="header" class="text-5xl text-center font-title font-black">JUnit extension-ök használata</h1> <div class="flex items-center justify-center gap-2"> <a href="/date/2024" target="_self" class="px-2.5 py-1 rounded-lg text-xs bg-zinc-50"> December 10, 2024 </a> <a href="/tags/java" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> java </a><a href="/tags/JUnit" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> JUnit </a><a href="/tags/testing" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> testing </a> </div> <p class="text-lg text-center text-zinc-700 max-w-[480px]">Ha fárasztónak és zavarónak érzed a teszt-osztályokban ismétlődő kódokat, akkor az extension-ök segíthetnek. Az extension-ökkel a tesztelési környezetet személyre szabhatjuk és a tesztek kódját egyszerűsíthetjük.</p> </div> <img src="/images/junit-extensions/java-checklist.png?w=1200&#38;q=80" alt="cover" class="w-full max-w-screen-md mx-auto rounded-lg"> </div> <div class="relative flex flex-col gap-2 max-w-screen-md mx-auto px-4 sm:px-6 text-base text-zinc-700"> <p> JUnit 4-ben a Runner-ekkel és Rule-okkal kiterjeszthetjük a teszt-osztály működését, de voltak korlátaik. Egy Runner-t használhattál osztályonként, így nem tudtál többet kombinálni. A Rule-ok pedig extra boilerplate-et igényeltek. </p>
+<p> A JUnit 5-ben bejött az extension modell, amely jobban támogatja a kompozíciót. Az extension-öket különböző helyeken regisztrálhatjuk, így finomhangolhatjuk a környezetet. </p>
+<h2 id="extension-ök-regisztrálása" class="text-2xl font-bold my-2"> Extension-ök regisztrálása </h2>
+<p> Az extension-öket a <code>@ExtendWith</code> annotációval regisztrálhatjuk a teszt-osztályon vagy a teszt-metóduson. A következő példában egy <code>TimingExtension</code>-t regisztrálunk a teszt-osztályon: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">ExtendWith</span><span style="color:#24292E">(TimingExtension.class)</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> TimingExtensionTest</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> test</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // ...</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> Ha a teszt-metóduson szeretnénk regisztrálni, akkor a következőképpen tehetjük meg: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> TimingExtensionTest</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">ExtendWith</span><span style="color:#24292E">(TimingExtension.class)</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> test</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // ...</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> Van lehetőségünk mező szinten is regisztrálni az extension-öket: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> TimingExtensionTest</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">RegisterExtension</span></span>
+<span class="line"><span style="color:#D73A49">    static</span><span style="color:#24292E"> TimingExtension timingExtension </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> TimingExtension</span><span style="color:#24292E">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> test</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // ...</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="népszerű-extension-ök" class="text-2xl font-bold my-2"> Népszerű extension-ök </h2>
+<p> A Java (és Spring) világban természetesen vannak már meglévő, mások által készített kiterjesztések, amelyek használatra készek. </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> MockitoExtension </strong>: A Mockito tesztelési keretrendszerhez készült extension, amely lehetővé teszi a mockok automatikus készítését és injektálását. </li>
+ </ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">ExtendWith</span><span style="color:#24292E">(MockitoExtension.class)</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> MockitoExtensionTest</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Mock</span></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#24292E"> MyService myService;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> test</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // ...</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> SpringExtension </strong>: A Spring keretrendszerhez készült extension, amely lehetővé teszi a <code>TestContext</code> létrehozását és a dependency injectiont illetve a tranzakciókezelést. </li>
+ </ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">ExtendWith</span><span style="color:#24292E">(SpringExtension.class)</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> SpringExtensionTest</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Autowired</span></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#24292E"> MyService myService;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> test</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // ...</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="injection-pontok" class="text-2xl font-bold my-2"> Injection pontok </h2>
+<p> A JUnit 5 6 db előre definiált injection pontot (interfész) biztosít, amelyek segítségével saját logikát szúrhatunk be a teszt futtatásába: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> BeforeAllCallback </strong>: az összes teszt metódus előtt lefutó kód, általános beállításokhoz </li>
+ </ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> BeforeAllCallbackExtension</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> BeforeAllCallback</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> beforeAll</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        System.out.</span><span style="color:#6F42C1">println</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;Before all tests&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> AfterAllCallback </strong>: az összes teszt metódus után lefutó kód, takarításra használhatjuk </li>
+ </ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> AfterAllCallbackExtension</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> AfterAllCallback</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> afterAll</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        System.out.</span><span style="color:#6F42C1">println</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;After all tests&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> BeforeEachCallback </strong> és <strong class="font-bold"> AfterEachCallback </strong>: természetesen lehetőségünk van az egyes teszt metódusok előtt és után is kódot futtatni </li>
+<li class="mb-1"> <strong class="font-bold"> TestWatcher </strong>: a teszt állapotát monitorozó interfész (pl. sikeres volt-e a teszt vagy sem), naplózásra, mérésekre és riportolásra használható </li>
+<li class="mb-1"> <strong class="font-bold"> ParameterResolver </strong>: a teszt metódusok paramétereit feloldó interfész, amely lehetővé teszi a paraméterek injektálását a teszt metódusokba </li>
+ </ul>
+<p> A fenti interfészek implementálásával készíthetjük el a saját extension-jeinket, finomhangolva a tesztjeinket és a közös kódrészleteket kiszervezhetjük ezekbe. </p>
+<h2 id="példa-1---teszt-konténer-inicializálása-és-leállítása" class="text-2xl font-bold my-2"> Példa #1 - Teszt konténer inicializálása és leállítása </h2>
+<p> Nézzünk egy példát, amely 2024-ben elég gyakori: teszt konténerben futtatjuk az adatbázisszervert, beállítjuk a property-ket, a tesztek után pedig leállítjuk. A példaprojektet a <a href="https://start.spring.io/" href="https://start.spring.io/" class="text-blue-600 after:content-['_↗']" target="_blank" rel="noopener noreferrer"> https://start.spring.io/ </a> segítségével hoztam létre, az alábbi függőségekkel: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#24292E">&lt;</span><span style="color:#22863A">dependencies</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.springframework.boot&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;spring-boot-starter-web&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">    &lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.springframework.boot&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;spring-boot-starter-data-jpa&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.postgresql&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;postgresql&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;runtime&lt;/</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">    &lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;com.h2database&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;h2&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;runtime&lt;/</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.projectlombok&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;lombok&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">optional</span><span style="color:#24292E">&gt;true&lt;/</span><span style="color:#22863A">optional</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.springframework.boot&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;spring-boot-starter-test&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;test&lt;/</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.springframework.boot&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;spring-boot-testcontainers&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;test&lt;/</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.testcontainers&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;junit-jupiter&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;test&lt;/</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.testcontainers&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;postgresql&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">		&lt;</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;test&lt;/</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">&lt;/</span><span style="color:#22863A">dependencies</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"></span></code></pre>
+<h3 id="a-rossz-megoldás" class="text-xl font-bold my-2"> A rossz megoldás </h3>
+<p> Az alábbi példában egy rossz megoldást láthatunk, ahol a teszt osztályban van a logika az adatbázis konténer indítására és leállítására: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">SpringBootTest</span><span style="color:#24292E">(</span><span style="color:#005CC5">webEnvironment</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> SpringBootTest.WebEnvironment.RANDOM_PORT)</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> ClutteredTest</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> static</span><span style="color:#D73A49"> final</span><span style="color:#24292E"> PostgreSQLContainer&lt;</span><span style="color:#D73A49">?</span><span style="color:#24292E">&gt; postgres </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#24292E"> PostgreSQLContainer&lt;&gt;(</span><span style="color:#032F62">&quot;postgres:latest&quot;</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">            .</span><span style="color:#6F42C1">withDatabaseName</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;testdb&quot;</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">            .</span><span style="color:#6F42C1">withUsername</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;testuser&quot;</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">            .</span><span style="color:#6F42C1">withPassword</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;testpass&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">BeforeAll</span></span>
+<span class="line"><span style="color:#D73A49">    static</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> setUp</span><span style="color:#24292E">() </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> IOException, InterruptedException {</span></span>
+<span class="line"><span style="color:#24292E">        postgres.</span><span style="color:#6F42C1">start</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">        postgres.</span><span style="color:#6F42C1">execInContainer</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;psql&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-U&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;testuser&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-d&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;testdb&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-c&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;CREATE TABLE public.user (id INT PRIMARY KEY, name TEXT)&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">        postgres.</span><span style="color:#6F42C1">execInContainer</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;psql&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-U&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;testuser&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-d&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;testdb&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-c&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;INSERT INTO public.user (id, name) VALUES (1, &#39;Alice&#39;), (2, &#39;Bob&#39;)&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">AfterAll</span></span>
+<span class="line"><span style="color:#D73A49">    static</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> tearDown</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#24292E">        postgres.</span><span style="color:#6F42C1">stop</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">DynamicPropertySource</span></span>
+<span class="line"><span style="color:#D73A49">    static</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> registerDynamicProperties</span><span style="color:#24292E">(DynamicPropertyRegistry </span><span style="color:#E36209">registry</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        registry.</span><span style="color:#6F42C1">add</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;spring.datasource.url&quot;</span><span style="color:#24292E">, postgres</span><span style="color:#D73A49">::</span><span style="color:#24292E">getJdbcUrl);</span></span>
+<span class="line"><span style="color:#24292E">        registry.</span><span style="color:#6F42C1">add</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;spring.datasource.username&quot;</span><span style="color:#24292E">, postgres</span><span style="color:#D73A49">::</span><span style="color:#24292E">getUsername);</span></span>
+<span class="line"><span style="color:#24292E">        registry.</span><span style="color:#6F42C1">add</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;spring.datasource.password&quot;</span><span style="color:#24292E">, postgres</span><span style="color:#D73A49">::</span><span style="color:#24292E">getPassword);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Autowired</span></span>
+<span class="line"><span style="color:#24292E">    EntityManager entityManager;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Transactional</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> testUserCreation</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // Query data</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> result </span><span style="color:#D73A49">=</span><span style="color:#24292E"> entityManager.</span><span style="color:#6F42C1">createNativeQuery</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;SELECT COUNT(*) FROM public.user&quot;</span><span style="color:#24292E">).</span><span style="color:#6F42C1">getSingleResult</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#6F42C1">        assertThat</span><span style="color:#24292E">(result).</span><span style="color:#6F42C1">isEqualTo</span><span style="color:#24292E">(</span><span style="color:#005CC5">2L</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A teszt rendben lefut, de a tesztosztály kódja tele van infrastruktúra kóddal, amely nem a tesztelendő logikára koncentrál: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> statikus metódusokban indítjuk és állítjuk le az adatbázis konténert </li>
+<li class="mb-1"> a <code>@DynamicPropertySource</code> annotációval injektáljuk a property-ket a Spring környezetbe </li>
+ </ul>
+<h3 id="a-jó-megoldás" class="text-xl font-bold my-2"> A jó megoldás </h3>
+<h4 id="postgresqlextension" class="text-base font-bold my-2"> PostgreSQLExtension </h4>
+<p> Ahhoz, hogy a teszt osztályt tisztábbá tegyük, készítsünk egy <code>PostgreSQLExtension</code>-t, amely az adatbázis konténer indítását és leállítását végzi: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> PostgreSQLExtension</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> BeforeAllCallback</span><span style="color:#24292E">, </span><span style="color:#6F42C1">AfterAllCallback</span><span style="color:#24292E"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> static</span><span style="color:#24292E"> PostgreSQLContainer&lt;</span><span style="color:#D73A49">?</span><span style="color:#24292E">&gt; postgres;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">SneakyThrows</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> beforeAll</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> Exception {</span></span>
+<span class="line"><span style="color:#24292E">        postgres </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#24292E"> PostgreSQLContainer&lt;&gt;(</span><span style="color:#032F62">&quot;postgres:latest&quot;</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">                .</span><span style="color:#6F42C1">withDatabaseName</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;testdb&quot;</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">                .</span><span style="color:#6F42C1">withUsername</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;testuser&quot;</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">                .</span><span style="color:#6F42C1">withPassword</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;testpass&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">        postgres.</span><span style="color:#6F42C1">start</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#6F42C1">        initProperties</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#6F42C1">        initData</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> initProperties</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#24292E">        System.</span><span style="color:#6F42C1">setProperty</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;spring.datasource.url&quot;</span><span style="color:#24292E">, postgres.</span><span style="color:#6F42C1">getJdbcUrl</span><span style="color:#24292E">());</span></span>
+<span class="line"><span style="color:#24292E">        System.</span><span style="color:#6F42C1">setProperty</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;spring.datasource.username&quot;</span><span style="color:#24292E">, postgres.</span><span style="color:#6F42C1">getUsername</span><span style="color:#24292E">());</span></span>
+<span class="line"><span style="color:#24292E">        System.</span><span style="color:#6F42C1">setProperty</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;spring.datasource.password&quot;</span><span style="color:#24292E">, postgres.</span><span style="color:#6F42C1">getPassword</span><span style="color:#24292E">());</span></span>
+<span class="line"><span style="color:#24292E">        System.</span><span style="color:#6F42C1">setProperty</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;spring.datasource.driver-class-name&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;org.postgresql.Driver&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">        System.</span><span style="color:#6F42C1">setProperty</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;spring.jpa.database-platform&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;org.hibernate.dialect.PostgreSQLDialect&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> initData</span><span style="color:#24292E">() </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> IOException, InterruptedException {</span></span>
+<span class="line"><span style="color:#24292E">        postgres.</span><span style="color:#6F42C1">execInContainer</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;psql&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-U&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;testuser&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-d&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;testdb&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-c&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;CREATE TABLE public.user (id INT PRIMARY KEY, name TEXT)&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">        postgres.</span><span style="color:#6F42C1">execInContainer</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;psql&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-U&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;testuser&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-d&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;testdb&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;-c&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;INSERT INTO public.user (id, name) VALUES (1, &#39;Alice&#39;), (2, &#39;Bob&#39;)&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> afterAll</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> Exception {</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> (postgres </span><span style="color:#D73A49">!=</span><span style="color:#005CC5"> null</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">            postgres.</span><span style="color:#6F42C1">stop</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> Normál esetben <code>@DynamicPropertySource</code>-t használnánk, azonban az extension-ökben ezt nem tudjuk használni, mert a Spring context már inicializált az extension futtatása előtt. Ezért a property-ket a <code>System.setProperty</code>-vel állítjuk be. </p>
+<h4 id="a-refaktorált-teszt-osztály" class="text-base font-bold my-2"> A refaktorált teszt osztály </h4>
+<p> Most már a közös elemeket kivehetjük a teszt osztályból: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">ExtendWith</span><span style="color:#24292E">(PostgreSQLExtension.class)</span></span>
+<span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">SpringBootTest</span><span style="color:#24292E">(</span><span style="color:#005CC5">webEnvironment</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> SpringBootTest.WebEnvironment.RANDOM_PORT, </span><span style="color:#005CC5">properties</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#032F62">        &quot;spring.main.lazy-initialization=true&quot;</span></span>
+<span class="line"><span style="color:#24292E">})</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> RefactoredTest</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Autowired</span></span>
+<span class="line"><span style="color:#24292E">    EntityManager entityManager;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> test</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // Query data</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> result </span><span style="color:#D73A49">=</span><span style="color:#24292E"> entityManager.</span><span style="color:#6F42C1">createNativeQuery</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;SELECT COUNT(*) FROM public.user&quot;</span><span style="color:#24292E">).</span><span style="color:#6F42C1">getSingleResult</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#6F42C1">        assertThat</span><span style="color:#24292E">(result).</span><span style="color:#6F42C1">isEqualTo</span><span style="color:#24292E">(</span><span style="color:#005CC5">2L</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A <code>spring.main.lazy-initialization=true</code> property-t be kell állítanunk, annak érdekében, hogy az EntityManager ne inicializálódjon a context indításakor. </p>
+<h2 id="példa-2---naplózó-extension" class="text-2xl font-bold my-2"> Példa #2 - Naplózó extension </h2>
+<p> Második példánkban egy naplózó extension-t készítünk, amely a teszt metódusok után logolja a futásukat illetve sikeres esetben kiírja a futás idejét is. Az extension két interfészt implementál: <code>TestWatcher</code> és <code>BeforeEachCallback</code>. </p>
+<p> A watcher a teszt állapotváltozásait figyeli, míg a <code>BeforeEachCallback</code> által definiált <code>beforeEach</code> minden egyes teszt metódus előtt lefut. </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> LoggingExtension</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> TestWatcher</span><span style="color:#24292E">, </span><span style="color:#6F42C1">BeforeEachCallback</span><span style="color:#24292E"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> long</span><span style="color:#24292E"> startMilliTime;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> beforeEach</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> Exception {</span></span>
+<span class="line"><span style="color:#24292E">        startMilliTime </span><span style="color:#D73A49">=</span><span style="color:#24292E"> System.</span><span style="color:#6F42C1">currentTimeMillis</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> testDisabled</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">, Optional&lt;</span><span style="color:#D73A49">String</span><span style="color:#24292E">&gt; </span><span style="color:#E36209">reason</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        System.out.</span><span style="color:#6F42C1">println</span><span style="color:#24292E">(context.</span><span style="color:#6F42C1">getDisplayName</span><span style="color:#24292E">() </span><span style="color:#D73A49">+</span><span style="color:#032F62"> &quot; DISABLED&quot;</span><span style="color:#D73A49"> +</span><span style="color:#24292E"> reason.</span><span style="color:#6F42C1">map</span><span style="color:#24292E">(r </span><span style="color:#D73A49">-&gt;</span><span style="color:#032F62"> &quot;: &quot;</span><span style="color:#D73A49"> +</span><span style="color:#24292E"> r).</span><span style="color:#6F42C1">orElse</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;&quot;</span><span style="color:#24292E">));</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> testSuccessful</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">        long</span><span style="color:#24292E"> duration </span><span style="color:#D73A49">=</span><span style="color:#24292E"> System.</span><span style="color:#6F42C1">currentTimeMillis</span><span style="color:#24292E">() </span><span style="color:#D73A49">-</span><span style="color:#24292E"> startMilliTime;</span></span>
+<span class="line"><span style="color:#24292E">        System.out.</span><span style="color:#6F42C1">println</span><span style="color:#24292E">(context.</span><span style="color:#6F42C1">getDisplayName</span><span style="color:#24292E">() </span><span style="color:#D73A49">+</span><span style="color:#032F62"> &quot; SUCCESSFUL in &quot;</span><span style="color:#D73A49"> +</span><span style="color:#24292E"> duration </span><span style="color:#D73A49">+</span><span style="color:#032F62"> &quot;ms&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> testAborted</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">, Throwable </span><span style="color:#E36209">cause</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        System.out.</span><span style="color:#6F42C1">println</span><span style="color:#24292E">(context.</span><span style="color:#6F42C1">getDisplayName</span><span style="color:#24292E">() </span><span style="color:#D73A49">+</span><span style="color:#032F62"> &quot; ABORTED&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> testFailed</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">, Throwable </span><span style="color:#E36209">cause</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        System.out.</span><span style="color:#6F42C1">println</span><span style="color:#24292E">(context.</span><span style="color:#6F42C1">getDisplayName</span><span style="color:#24292E">() </span><span style="color:#D73A49">+</span><span style="color:#032F62"> &quot; FAILED with &quot;</span><span style="color:#D73A49"> +</span><span style="color:#24292E"> cause.</span><span style="color:#6F42C1">getMessage</span><span style="color:#24292E">());</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A fentiek után hozzáadhatjuk az eredeti tesztünkhöz ezt az extension-t is: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">ExtendWith</span><span style="color:#24292E">({</span></span>
+<span class="line"><span style="color:#24292E">        PostgreSQLExtension.class,</span></span>
+<span class="line"><span style="color:#24292E">        LoggingExtension.class</span></span>
+<span class="line"><span style="color:#24292E">})</span></span>
+<span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">SpringBootTest</span><span style="color:#24292E">(</span><span style="color:#005CC5">webEnvironment</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> SpringBootTest.WebEnvironment.RANDOM_PORT, </span><span style="color:#005CC5">properties</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#032F62">        &quot;spring.main.lazy-initialization=true&quot;</span></span>
+<span class="line"><span style="color:#24292E">})</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> RefactoredTestWithLogging</span><span style="color:#24292E"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Autowired</span></span>
+<span class="line"><span style="color:#24292E">    EntityManager entityManager;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> test</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // Query data</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> result </span><span style="color:#D73A49">=</span><span style="color:#24292E"> entityManager.</span><span style="color:#6F42C1">createNativeQuery</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;SELECT COUNT(*) FROM public.user&quot;</span><span style="color:#24292E">).</span><span style="color:#6F42C1">getSingleResult</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#6F42C1">        assertThat</span><span style="color:#24292E">(result).</span><span style="color:#6F42C1">isEqualTo</span><span style="color:#24292E">(</span><span style="color:#005CC5">2L</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A konzolon látható az eredmény: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>test() SUCCESSFUL in 598ms</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="példa-3---store-használata-és-paraméterek-feloldása" class="text-2xl font-bold my-2"> Példa #3 - Store használata és paraméterek feloldása </h2>
+<p> Utolsó példánkban bemutatom, hogyan tudjuk az ExtensionContext által adott tárolót használni illetve ezt elérni a paraméterek feloldásával a teszt metódusokban. </p>
+<p> Készítsünk egy <code>TestingState</code>-et, amely példa adataink tárolására szolgál: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> TestingState</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> final</span><span style="color:#24292E"> Map&lt;</span><span style="color:#D73A49">String</span><span style="color:#24292E">, </span><span style="color:#D73A49">String</span><span style="color:#24292E">&gt; results </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#24292E"> ConcurrentHashMap&lt;&gt;();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> addResult</span><span style="color:#24292E">(String </span><span style="color:#E36209">testName</span><span style="color:#24292E">, String </span><span style="color:#E36209">result</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        results.</span><span style="color:#6F42C1">put</span><span style="color:#24292E">(testName, result);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> report</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#24292E">        System.out.</span><span style="color:#6F42C1">println</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;---- Test Results ----&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">        results.</span><span style="color:#6F42C1">forEach</span><span style="color:#24292E">((testName, result) </span><span style="color:#D73A49">-&gt;</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">            System.out.</span><span style="color:#6F42C1">println</span><span style="color:#24292E">(testName </span><span style="color:#D73A49">+</span><span style="color:#032F62"> &quot;: &quot;</span><span style="color:#D73A49"> +</span><span style="color:#24292E"> result);</span></span>
+<span class="line"><span style="color:#24292E">        });</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> Az extension-ünk 3 interfészt implementál majd: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> BeforeAllCallback </strong>: inicializálja a <code>TestingState</code>-et és eltárolja az <code>ExtensionContext</code>-en </li>
+<li class="mb-1"> <strong class="font-bold"> AfterAllCallback </strong>: a tesztek futása után kiírja a teszt eredményeket a <code>report()</code> metódussal </li>
+<li class="mb-1"> <strong class="font-bold"> ParameterResolver </strong>: lehetővé tesszük, hogy a teszt metódusokba injektáljuk a <code>TestingState</code>-et </li>
+ </ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> StoreExtension</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> BeforeAllCallback</span><span style="color:#24292E">, </span><span style="color:#6F42C1">AfterAllCallback</span><span style="color:#24292E">, </span><span style="color:#6F42C1">ParameterResolver</span><span style="color:#24292E"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> static</span><span style="color:#D73A49"> final</span><span style="color:#24292E"> ExtensionContext.Namespace NAMESPACE </span><span style="color:#D73A49">=</span><span style="color:#24292E"> ExtensionContext.Namespace.</span><span style="color:#6F42C1">create</span><span style="color:#24292E">(StoreExtension.class);</span></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> static</span><span style="color:#D73A49"> final</span><span style="color:#24292E"> String TESTING_STATE_KEY </span><span style="color:#D73A49">=</span><span style="color:#032F62"> &quot;testingState&quot;</span><span style="color:#24292E">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> beforeAll</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> Exception {</span></span>
+<span class="line"><span style="color:#24292E">        ExtensionContext.Store store </span><span style="color:#D73A49">=</span><span style="color:#24292E"> context.</span><span style="color:#6F42C1">getRoot</span><span style="color:#24292E">().</span><span style="color:#6F42C1">getStore</span><span style="color:#24292E">(NAMESPACE);</span></span>
+<span class="line"><span style="color:#24292E">        store.</span><span style="color:#6F42C1">put</span><span style="color:#24292E">(TESTING_STATE_KEY, </span><span style="color:#D73A49">new</span><span style="color:#6F42C1"> TestingState</span><span style="color:#24292E">());</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> afterAll</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> Exception {</span></span>
+<span class="line"><span style="color:#24292E">        TestingState testingState </span><span style="color:#D73A49">=</span><span style="color:#6F42C1"> getTestingState</span><span style="color:#24292E">(context);</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> (testingState </span><span style="color:#D73A49">!=</span><span style="color:#005CC5"> null</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">            testingState.</span><span style="color:#6F42C1">report</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> boolean</span><span style="color:#6F42C1"> supportsParameter</span><span style="color:#24292E">(ParameterContext </span><span style="color:#E36209">parameterContext</span><span style="color:#24292E">, ExtensionContext </span><span style="color:#E36209">extensionContext</span><span style="color:#24292E">) </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> ParameterResolutionException {</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> parameterContext.</span><span style="color:#6F42C1">getParameter</span><span style="color:#24292E">().</span><span style="color:#6F42C1">getType</span><span style="color:#24292E">() </span><span style="color:#D73A49">==</span><span style="color:#24292E"> TestingState.class;</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#24292E"> Object </span><span style="color:#6F42C1">resolveParameter</span><span style="color:#24292E">(ParameterContext </span><span style="color:#E36209">parameterContext</span><span style="color:#24292E">, ExtensionContext </span><span style="color:#E36209">extensionContext</span><span style="color:#24292E">) </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> ParameterResolutionException {</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#6F42C1"> getTestingState</span><span style="color:#24292E">(extensionContext);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#24292E"> TestingState </span><span style="color:#6F42C1">getTestingState</span><span style="color:#24292E">(ExtensionContext </span><span style="color:#E36209">context</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        ExtensionContext.Store store </span><span style="color:#D73A49">=</span><span style="color:#24292E"> context.</span><span style="color:#6F42C1">getRoot</span><span style="color:#24292E">().</span><span style="color:#6F42C1">getStore</span><span style="color:#24292E">(NAMESPACE);</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> store.</span><span style="color:#6F42C1">getOrComputeIfAbsent</span><span style="color:#24292E">(TESTING_STATE_KEY, key </span><span style="color:#D73A49">-&gt;</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> TestingState</span><span style="color:#24292E">(), TestingState.class);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A teszt futtatása során a teszt metódusba injektálhatjuk a <code>TestingState</code>-et: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">ExtendWith</span><span style="color:#24292E">(StoreExtension.class)</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> TestWithStore</span><span style="color:#24292E"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#D73A49">    void</span><span style="color:#6F42C1"> test</span><span style="color:#24292E">(TestingState </span><span style="color:#E36209">testingState</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // do test</span></span>
+<span class="line"><span style="color:#6F42C1">        assertTrue</span><span style="color:#24292E">(</span><span style="color:#005CC5">true</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">        testingState.</span><span style="color:#6F42C1">addResult</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;test&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;SUCCESS&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A konzolon látható az eredmény, a teszt metódus során hozzáadott objektum: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>---- Test Results ----</span></span>
+<span class="line"><span>test: SUCCESS</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="összefoglalás" class="text-2xl font-bold my-2"> Összefoglalás </h2>
+<p> A JUnit 5 extension-ökkel átalakulhat az a mód, ahogyan teszteket írunk, ahogy a teszt osztályainkat szervezzük. Finomabb felbontásokat érhetünk el valamint csökkenthetjük a boilerplate kódot bennük. Így könnyebben karbantartható, olvashatóbb és érthetőbb kódot írhatunk. </p>
+<p> Egy dologra tudunk fókuszálni: a tesztelendő logikára. Mivel a kiterjesztéseket akár projekteken átívelően is el tudjuk készíteni, így sztenderdizálhatjuk a cégen belül a tesztelési környezetet és a tesztelési gyakorlatokat. </p>
+<p> A példa alkalmazás elérhető a GitHub-on: <a href="https://github.com/pbes/junit-extensions" href="https://github.com/pbes/junit-extensions" class="text-blue-600 after:content-['_↗']" target="_blank" rel="noopener noreferrer"> https://github.com/pbes/junit-extensions </a> </p> </div>  </div> <footer class="bg-gradient-to-t from-orange-50"> <div class="flex flex-row items-center justify-center max-w-screen-md h-96 mx-auto px-4 sm:px-6"> <p class="text-4xl leading-[60px] bg-clip-text text-center text-transparent bg-gradient-to-r from-orange-600 to-amber-600 font-title font-black"> Beszéljünk a technológiáról 🚀 </p> </div> </footer> </div> </body></html> 
