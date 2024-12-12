@@ -23,39 +23,36 @@
 <div class="p-4 border rounded-lg border-zinc-100 text-sm"> 
 <p> Régebbi verziókban a <code>pg-pool</code>-t is telepíteni kellett, de a cikk írásának időpontjában a <code>pg</code> már tartalmazza a pool-t is. </p>
  </div>
-<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"></span>
-<span class="line"><span style="color:#6F42C1">Miután</span><span style="color:#032F62"> telepítettük,</span><span style="color:#032F62"> létrehozhatunk</span><span style="color:#032F62"> egy</span><span style="color:#032F62"> connection</span><span style="color:#032F62"> pool-t:</span></span>
+<p> Miután telepítettük, létrehozhatunk egy connection pool-t: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { Pool } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> &#39;pg&#39;</span><span style="color:#24292E">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#032F62">```</span><span style="color:#6F42C1">javascript</span></span>
-<span class="line"><span style="color:#6F42C1">import</span><span style="color:#032F62"> { Pool } from &#39;pg&#39;;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#6F42C1">const</span><span style="color:#032F62"> pool = new Pool({</span></span>
-<span class="line"><span style="color:#6F42C1">  user:</span><span style="color:#032F62"> &#39;username&#39;,</span></span>
-<span class="line"><span style="color:#6F42C1">  host:</span><span style="color:#032F62"> &#39;host&#39;,</span></span>
-<span class="line"><span style="color:#6F42C1">  database:</span><span style="color:#032F62"> &#39;database&#39;,</span></span>
-<span class="line"><span style="color:#6F42C1">  password:</span><span style="color:#032F62"> &#39;password&#39;,</span></span>
-<span class="line"><span style="color:#6F42C1">  port:</span><span style="color:#032F62"> 5432,</span></span>
-<span class="line"><span style="color:#6F42C1">  max:</span><span style="color:#032F62"> 20,</span></span>
-<span class="line"><span style="color:#6F42C1">  idleTimeoutMillis:</span><span style="color:#032F62"> 30000,</span></span>
-<span class="line"><span style="color:#6F42C1">  connectionTimeoutMillis:</span><span style="color:#032F62"> 2000,</span></span>
-<span class="line"><span style="color:#032F62">});</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#6F42C1">A</span><span style="color:#032F62"> fenti példában létrehoztunk egy pool-t, mely:</span></span>
-<span class="line"><span style="color:#D73A49">*</span><span style="color:#032F62"> Maximum 20 kapcsolatot tarthat fent. Ha elfogyasztja (</span><span style="color:#6F42C1">használja</span><span style="color:#032F62">) az alkalmazás mind a 20-at, akkor a következő kérésnek várakoznia kell.</span></span>
-<span class="line"><span style="color:#D73A49">*</span><span style="color:#032F62"> Az idleTimeoutMillis-t 30.000-re, azaz 30 másodpercre állítottuk. Ha egy kapcsolat nem használt ennyi ideig, a pool bezárja azt.</span></span>
-<span class="line"><span style="color:#D73A49">*</span><span style="color:#032F62"> A kapcsolat létrehozására maximum 2 másodpercet várunk.</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#6F42C1">Most,</span><span style="color:#032F62"> hogy van egy pool-unk a `</span><span style="color:#6F42C1">pool.query</span><span style="color:#24292E">()</span><span style="color:#032F62">` </span><span style="color:#6F42C1">metódussal</span><span style="color:#032F62"> tudunk lekérdezéseket végrehajtani:</span></span>
-<span class="line"><span style="color:#032F62">```</span><span style="color:#6F42C1">javascript</span></span>
-<span class="line"><span style="color:#D73A49">export</span><span style="color:#24292E"> const getUser = async (</span><span style="color:#6F42C1">userId:</span><span style="color:#032F62"> number</span><span style="color:#24292E">): Promise</span><span style="color:#D73A49">&lt;</span><span style="color:#24292E">UserDTO</span><span style="color:#D73A49">&gt;</span><span style="color:#24292E"> =</span><span style="color:#D73A49">&gt;</span><span style="color:#24292E"> {</span></span>
-<span class="line"><span style="color:#6F42C1">    const</span><span style="color:#032F62"> {</span><span style="color:#032F62"> rows</span><span style="color:#032F62"> }</span><span style="color:#032F62"> =</span><span style="color:#032F62"> await</span><span style="color:#032F62"> pool.query</span><span style="color:#24292E">(</span><span style="color:#032F62">`</span><span style="color:#6F42C1">SELECT</span><span style="color:#005CC5"> *</span><span style="color:#032F62"> FROM users WHERE id = </span><span style="color:#005CC5">$1</span><span style="color:#032F62">`</span><span style="color:#6F42C1">,</span><span style="color:#24292E"> [userId]);</span></span>
-<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#6F42C1">rows.length</span><span style="color:#032F62"> ===</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">) {</span></span>
-<span class="line"><span style="color:#6F42C1">        throw</span><span style="color:#032F62"> new</span><span style="color:#032F62"> NotFoundException</span><span style="color:#24292E">(</span><span style="color:#6F42C1">&#39;User not found&#39;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> pool</span><span style="color:#D73A49"> =</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Pool</span><span style="color:#24292E">({</span></span>
+<span class="line"><span style="color:#24292E">  user: </span><span style="color:#032F62">&#39;username&#39;</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  host: </span><span style="color:#032F62">&#39;host&#39;</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  database: </span><span style="color:#032F62">&#39;database&#39;</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  password: </span><span style="color:#032F62">&#39;password&#39;</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  port: </span><span style="color:#005CC5">5432</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  max: </span><span style="color:#005CC5">20</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  idleTimeoutMillis: </span><span style="color:#005CC5">30000</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  connectionTimeoutMillis: </span><span style="color:#005CC5">2000</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">});</span></span>
+<span class="line"></span></code></pre>
+<p> A fenti példában létrehoztunk egy pool-t, mely: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> Maximum 20 kapcsolatot tarthat fent. Ha elfogyasztja (használja) az alkalmazás mind a 20-at, akkor a következő kérésnek várakoznia kell. </li>
+<li class="mb-1"> Az idleTimeoutMillis-t 30.000-re, azaz 30 másodpercre állítottuk. Ha egy kapcsolat nem használt ennyi ideig, a pool bezárja azt. </li>
+<li class="mb-1"> A kapcsolat létrehozására maximum 2 másodpercet várunk. </li>
+ </ul>
+<p> Most, hogy van egy pool-unk a <code>pool.query()</code> metódussal tudunk lekérdezéseket végrehajtani: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> const</span><span style="color:#6F42C1"> getUser</span><span style="color:#D73A49"> =</span><span style="color:#D73A49"> async</span><span style="color:#24292E"> (</span><span style="color:#E36209">userId</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Promise</span><span style="color:#24292E">&lt;</span><span style="color:#6F42C1">UserDTO</span><span style="color:#24292E">&gt; </span><span style="color:#D73A49">=&gt;</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    const</span><span style="color:#24292E"> { </span><span style="color:#005CC5">rows</span><span style="color:#24292E"> } </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> await</span><span style="color:#24292E"> pool.</span><span style="color:#6F42C1">query</span><span style="color:#24292E">(</span><span style="color:#032F62">`SELECT * FROM users WHERE id = $1`</span><span style="color:#24292E">, [userId]);</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (rows.</span><span style="color:#005CC5">length</span><span style="color:#D73A49"> ===</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">        throw</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> NotFoundException</span><span style="color:#24292E">(</span><span style="color:#032F62">&#39;User not found&#39;</span><span style="color:#24292E">);</span></span>
 <span class="line"><span style="color:#24292E">    }</span></span>
-<span class="line"><span style="color:#D73A49">    return</span><span style="color:#032F62"> {</span></span>
-<span class="line"><span style="color:#6F42C1">        id:</span><span style="color:#032F62"> rows[0].id,</span></span>
-<span class="line"><span style="color:#6F42C1">        name:</span><span style="color:#032F62"> rows[0].name,</span></span>
-<span class="line"><span style="color:#6F42C1">        email:</span><span style="color:#032F62"> rows[0].email,</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">        id: rows[</span><span style="color:#005CC5">0</span><span style="color:#24292E">].id,</span></span>
+<span class="line"><span style="color:#24292E">        name: rows[</span><span style="color:#005CC5">0</span><span style="color:#24292E">].name,</span></span>
+<span class="line"><span style="color:#24292E">        email: rows[</span><span style="color:#005CC5">0</span><span style="color:#24292E">].email,</span></span>
 <span class="line"><span style="color:#24292E">    }</span></span>
 <span class="line"><span style="color:#24292E">}</span></span>
 <span class="line"></span></code></pre>
