@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en" class="text-zinc-800"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"><!-- Canonical URL --><link rel="canonical" href="https://pbes.github.io/posts/spring-modulith"><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script><!-- Primary Meta Tags --><title>Spring Modulith · pbes blog</title><meta name="title" content="Spring Modulith · pbes blog"><meta name="description" content="A mikroszervíz egy menő hype, de nem érdemes még temetnünk a jó öreg monolitikus alkalmazásokat"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://pbes.github.io/posts/spring-modulith"><meta property="og:title" content="Spring Modulith · pbes blog"><meta property="og:description" content="A mikroszervíz egy menő hype, de nem érdemes még temetnünk a jó öreg monolitikus alkalmazásokat"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://pbes.github.io/posts/spring-modulith"><meta property="twitter:title" content="Spring Modulith · pbes blog"><meta property="twitter:description" content="A mikroszervíz egy menő hype, de nem érdemes még temetnünk a jó öreg monolitikus alkalmazásokat"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><link rel="stylesheet" href="/_astro/about.D-PnAoZ1.css">
+<link rel="stylesheet" href="/_astro/_slug_.D70-yzNw.css"><script type="module" src="/_astro/hoisted.Bk9VN7UM.js"></script>
+<script type="module" src="/_astro/page.BNYwb576.js"></script></head> <body> <div class="flex flex-col h-full mb-8 overflow-y-scroll antialiased"> <header class="sticky z-50 top-0 bg-white/80 backdrop-blur-xl transition-all select-none bg-gradient-to-b from-orange-50"> <div class="flex flex-row gap-8 items-center justify-between max-w-screen-md mx-auto h-24 px-4 sm:px-6"> <a href="/" class="flex flex-row items-center justify-center gap-2"> <img src="/avatar.jpg" alt="author avatar" class="w-10 rounded-full aspect-square"> <span class="text-orange-600 font-title font-black">pbes blog</span> </a> <div class="flex flex-row gap-4" id="menu-items"> <a href="/posts" target="_self" class="h-full text-sm hover:text-orange-700"> Bejegyzések </a><a href="/tags" target="_self" class="h-full text-sm hover:text-orange-700"> Címkék </a><a href="/date" target="_self" class="h-full text-sm hover:text-orange-700"> Archívum </a><a href="/about" target="_self" class="h-full text-sm hover:text-orange-700"> Rólam </a><a href="https://github.com/pbes" target="_blank" class="h-full text-sm hover:text-orange-700"> GitHub </a> </div> </div> </header> <div class="flex-auto">  <div class="flex flex-col gap-8 md:w-5/6 px-4 py-12 sm:px-8 mx-auto"> <div class="flex flex-col gap-6 items-center justify-center max-w-screen-sm mx-auto"> <h1 id="header" class="text-5xl text-center font-title font-black">Spring Modulith</h1> <div class="flex items-center justify-center gap-2"> <a href="/date/2024" target="_self" class="px-2.5 py-1 rounded-lg text-xs bg-zinc-50"> December 16, 2024 </a> <a href="/tags/architecture" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> architecture </a><a href="/tags/Java" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> Java </a><a href="/tags/Spring" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> Spring </a> </div> <p class="text-lg text-center text-zinc-700 max-w-[480px]">A mikroszervíz egy menő hype, de nem érdemes még temetnünk a jó öreg monolitikus alkalmazásokat</p> </div> <img src="/images/spring-modulith/spring-modulith-cover.jpg?w=1200&#38;q=80" alt="cover" class="w-full max-w-screen-md mx-auto rounded-lg"> </div> <div class="relative flex flex-col gap-2 max-w-screen-md mx-auto px-4 sm:px-6 text-base text-zinc-700"> <p> Viczián Istvánnál olvastam erről a koncepcióról: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <a href="https://www.jtechlog.hu/2022/12/19/spring-modulith.html" href="https://www.jtechlog.hu/2022/12/19/spring-modulith.html" class="text-blue-600 after:content-['_↗']" target="_blank" rel="noopener noreferrer"> https://www.jtechlog.hu/2022/12/19/spring-modulith.html </a> </li>
+<li class="mb-1"> <a href="https://www.jtechlog.hu/2024/07/24/spring-modulith-esemenyek.html" href="https://www.jtechlog.hu/2024/07/24/spring-modulith-esemenyek.html" class="text-blue-600 after:content-['_↗']" target="_blank" rel="noopener noreferrer"> https://www.jtechlog.hu/2024/07/24/spring-modulith-esemenyek.html </a> </li>
+ </ul>
+<p> Úgy gondoltam, hogy el is menthetném a cikkeket, de sokkal jobban megmarad, ha készítek rá én is egy példa projektet. </p>
+<p> A mikroszervízek nagyon népszerűek. Ha másért nem is, azért, hogy az emberek beírhassák a CV-jükbe, de sok szempontból bonyolultabbá teszik a munkát, mint egy monolit alkalmazás. A service-ek függetlenségét kell garantálnunk, különben csak egy elosztott monolitot készítünk, amely még nehezebben karbantartható, mint egy hagyományos monolit: egyszerre kell fejleszteni, egyszerre kell az új verziókat deployolni, nem indítható egyetlen paranccsal. </p>
+<p> A hagyományos monolittal az a probléma, hogy amint legacy-vá válik a kód és a logika olyan bonyolult, minden módosítás veszélyessé válhat. Ha hozzáadunk egy “B” feature-t, elképzelhető, hogy megfelelő tesztelés hiányában, “A” elromlik. Szerencsére a Spring Modulith projekt képes segíteni minket abban, hogy egyetlen monolitikus alkalmazáson belül szeparáljuk a különböző üzleti funkciókat, amelyek így nem keverednek, sokkal tisztább logikát kaphatunk. </p>
+<p> Az alapötlet: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> a projekt legfelső szintű package-ei lesznek a modulok </li>
+<li class="mb-1"> 1 modul egy másik modul publikus interfészét hívhatja, nem engedélyezett a belső logika elérése </li>
+<li class="mb-1"> nem engedélyezett a körkörös függőség </li>
+ </ul>
+<p> <div src="/images/spring-modulith/modulith_01.png" alt="Spring Modulith függőségi gráf" class="flex flex-col gap-2 text-center"> <img class="w-full rounded-lg overflow-clip" src="/images/spring-modulith/modulith_01.png?w=1024&#38;q=70" alt="Spring Modulith függőségi gráf"> <span class="text-gray-400 font-normal text-sm">Spring Modulith függőségi gráf</span> </div> </p>
+<p> Mit értünk publikus interfész alatt? </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> a package legfelső szintű osztályait </li>
+<li class="mb-1"> azon osztályokat, amelyeket explicit módon publikussá teszünk nevesítve a <code>package-info.java</code> fájlban </li>
+ </ul>
+<p> A fenti példán: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> a Modul 1 hívhatja a Modul 2 API interfészét </li>
+<li class="mb-1"> a Modul 1 nem hívhatja közvetlenül a Modul 2 belső osztályait </li>
+<li class="mb-1"> a Modul 2 nem hívhatja a Modul 1-et, mert körkörös függőség alakulna ki </li>
+ </ul>
+<p> Ezekkel a megkötésekkel egészen jól el tudjuk szeparálni az egyes üzleti területeket és a hozzájuk kapcsolódó logikát. Az egyes modulok egymás között eseményekkel tudnak kommunikálni, mely a Spring részét képező <code>ApplicationEventPublisher</code> segítségével történik. </p>
+<h2 id="példa-projekt" class="text-2xl font-bold my-2"> Példa projekt </h2>
+<h3 id="események-kezelése" class="text-xl font-bold my-2"> Események kezelése </h3>
+<p> A példa projektben 2 modul található: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <code>order</code> a rendelések kezeléséért felelős </li>
+<li class="mb-1"> <code>shipment</code> a szállítások kezeléséért felelős </li>
+ </ul>
+<p> Az <code>order</code> modul kontrollere 2 endpointot publikál: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <code>POST /orders</code>: új rendelés létrehozása </li>
+<li class="mb-1"> <code>DELETE /orders/{id}</code>: rendelés törlése (ami megtehető addig, amíg a szállítás nem indult el) </li>
+ </ul>
+<p> A <code>CreateOrderAction</code> osztályban a rendelés létrehozása után létrehozzuk az <code>OrderCreatedEvent</code> eseményt, melyet az <code>ApplicationEventPublisher</code> dob szét az alkalmazás többi része felé: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Transactional</span><span style="color:#24292E">(Transactional.TxType.REQUIRED)</span></span>
+<span class="line"><span style="color:#D73A49">public</span><span style="color:#24292E"> OrderDTO </span><span style="color:#6F42C1">execute</span><span style="color:#24292E">(CreateOrderDTO createOrderDTO) {</span></span>
+<span class="line"><span style="color:#D73A49">    final</span><span style="color:#D73A49"> var</span><span style="color:#24292E"> order </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Order</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">    order.</span><span style="color:#6F42C1">setState</span><span style="color:#24292E">(OrderState.CREATED);</span></span>
+<span class="line"><span style="color:#24292E">    order.</span><span style="color:#6F42C1">setUserId</span><span style="color:#24292E">(createOrderDTO.</span><span style="color:#6F42C1">getUserId</span><span style="color:#24292E">());</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    final</span><span style="color:#D73A49"> var</span><span style="color:#24292E"> savedOrder </span><span style="color:#D73A49">=</span><span style="color:#24292E"> orderRepository.</span><span style="color:#6F42C1">save</span><span style="color:#24292E">(order);</span></span>
+<span class="line"><span style="color:#24292E">    eventPublisher.</span><span style="color:#6F42C1">publishEvent</span><span style="color:#24292E">(</span><span style="color:#D73A49">new</span><span style="color:#6F42C1"> OrderCreatedEvent</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">, savedOrder.</span><span style="color:#6F42C1">getId</span><span style="color:#24292E">()));</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#24292E"> orderMapper.</span><span style="color:#6F42C1">map</span><span style="color:#24292E">(savedOrder, OrderDTO.class);</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A <code>shipment</code> modulban az <code>OrderCreatedHandler</code> osztály figyeli az <code>OrderCreatedEvent</code> eseményt, ezt az <code>EventListener</code> annotációval adhatjuk meg és létrehoz egy szállítmányt létrehozott állapotban: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">EventListener</span></span>
+<span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> handleOrderCreated</span><span style="color:#24292E">(OrderCreatedEvent event) {</span></span>
+<span class="line"><span style="color:#24292E">    log.</span><span style="color:#6F42C1">info</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;Order created: {}&quot;</span><span style="color:#24292E">, event.</span><span style="color:#6F42C1">getOrderId</span><span style="color:#24292E">());</span></span>
+<span class="line"><span style="color:#D73A49">    final</span><span style="color:#D73A49"> var</span><span style="color:#24292E"> shipment </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Shipment</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">    shipment.</span><span style="color:#6F42C1">setOrderId</span><span style="color:#24292E">(event.</span><span style="color:#6F42C1">getOrderId</span><span style="color:#24292E">());</span></span>
+<span class="line"><span style="color:#24292E">    shipment.</span><span style="color:#6F42C1">setState</span><span style="color:#24292E">(ShipmentState.CREATED);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    final</span><span style="color:#D73A49"> var</span><span style="color:#24292E"> savedShipment </span><span style="color:#D73A49">=</span><span style="color:#24292E"> shipmentRepository.</span><span style="color:#6F42C1">save</span><span style="color:#24292E">(shipment);</span></span>
+<span class="line"><span style="color:#24292E">    eventPublisher.</span><span style="color:#6F42C1">publishEvent</span><span style="color:#24292E">(</span><span style="color:#D73A49">new</span><span style="color:#6F42C1"> ShipmentCreatedEvent</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">, savedShipment.</span><span style="color:#6F42C1">getId</span><span style="color:#24292E">()));</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h3 id="aszinkron-események" class="text-xl font-bold my-2"> Aszinkron események </h3>
+<p> A fenti eseménykezelő az eseményt létrehozó kóddal egy közös tranzakcióban fut és amíg nem sikerül lezárni, az eredeti kód sem tud visszatérni az eredménnyel. Lehetőségünk van az <code>@Async</code>, a <code>@TransactionalEventListener</code> és a <code>@Transactional(propagation = Propagation.REQUIRES_NEW)</code> annotációkkal aszinkron, külön tranzakcióban futó eseménykezelővé alakítani: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Async</span></span>
+<span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">TransactionalEventListener</span></span>
+<span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Transactional</span><span style="color:#24292E">(</span><span style="color:#005CC5">propagation</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> Propagation.REQUIRES_NEW)</span></span>
+<span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> handleOrderCreated</span><span style="color:#24292E">(OrderCreatedEvent event) {</span></span>
+<span class="line"><span style="color:#24292E">    ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> Ezt a 3 annotációt váltja ki a <code>spring-modulith-events-api</code>-ban definiált <code>@ApplicationModuleListener</code> annotáció: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#24292E">&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.springframework.modulith&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;spring-modulith-events-api&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"></span></code></pre>
+<h3 id="események-mentése" class="text-xl font-bold my-2"> Események mentése </h3>
+<p> Még mindig nem teljes a megoldásunk: amennyiben az alkalmazás leáll vagy a shipment modulban nem fut le az eseménykezelő, szükségünk lehet arra, hogy mentsük az eseményt és újrapróbáljuk a feldolgozását. </p>
+<p> Ehhez első lépésben mentenünk kell, az Event Publication Repository-t az alábbi <code>pom.xml</code> függőséggel vehetjük fel: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#24292E">&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">    &lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.springframework.modulith&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">    &lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;spring-modulith-starter-jpa&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"></span></code></pre>
+<p> Amennyiben nem a Hibernate-re bízzuk a táblák létrehozását, hanem Flyway-t vagy Liquibase-t használunk, nekünk kell kézzel létrehozni az event_publication és az event_publication_archive táblákat: <a href="https://docs.spring.io/spring-modulith/docs/current-SNAPSHOT/reference/html/#appendix.schemas" href="https://docs.spring.io/spring-modulith/docs/current-SNAPSHOT/reference/html/#appendix.schemas" class="text-blue-600 after:content-['_↗']" target="_blank" rel="noopener noreferrer"> https://docs.spring.io/spring-modulith/docs/current-SNAPSHOT/reference/html/#appendix.schemas </a> </p>
+<p> Ehhez re-publikálni kell, amelyet megtehetünk: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> deklaratívan: </li>
+ </ul>
+<p> Az <code>application.yml</code>-ben a következő beállításokkal: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#22863A">spring</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">  modulith</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">    republish-outstanding-events-on-restart</span><span style="color:#24292E">: </span><span style="color:#005CC5">true</span></span>
+<span class="line"></span></code></pre>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> programozottan: a <code>IncompleteEventPublications</code> osztály használatával </li>
+ </ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Service</span></span>
+<span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">RequiredArgsConstructor</span></span>
+<span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> EventCleanupService</span><span style="color:#24292E"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> final</span><span style="color:#24292E"> IncompleteEventPublications incompleteEventPublications;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Scheduled</span><span style="color:#24292E">(</span><span style="color:#005CC5">fixedRate</span><span style="color:#D73A49"> =</span><span style="color:#005CC5"> 10000</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> republishIncompleteEvents</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#24292E">        incompleteEventPublications.</span><span style="color:#6F42C1">resubmitIncompletePublicationsOlderThan</span><span style="color:#24292E">(Duration.ZERO);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A befejezett eseményeket a <code>CompletedEventPublications</code> segítségével listázhatjuk és törölhetjük. </p>
+<h3 id="események-externalizálása-megosztása-más-service-ekkel" class="text-xl font-bold my-2"> Események externalizálása, megosztása más service-ekkel </h3>
+<p> Amennyiben az eseményeket más service-ekkel is meg szeretnénk osztani Kafka-n keresztül, akkor a <code>spring-modulith-events-kafka</code> függőséget kell felvennünk: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#24292E">&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;org.springframework.modulith&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;spring-modulith-events-kafka&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">	&lt;</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;runtime&lt;/</span><span style="color:#22863A">scope</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"></span></code></pre>
+<p> Ekkor az <code>@Externalized</code> annotációval ellátott események (a példában a <code>ShipmentCreatedEvent</code>) automatikusan továbbításra kerülnek egy Kafka sorra, ezt parancssori Kafka consumerrel ellenőrizhetjük: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">$</span><span style="color:#032F62"> docker</span><span style="color:#032F62"> exec</span><span style="color:#005CC5"> -it</span><span style="color:#032F62"> modulith-example-kafka-1</span><span style="color:#032F62"> /bin/bash</span></span>
+<span class="line"><span style="color:#24292E">[appuser@1a22052f3675 </span><span style="color:#D73A49">~</span><span style="color:#24292E">]$ kafka-topics --list --bootstrap-server localhost:9092</span></span>
+<span class="line"><span style="color:#6F42C1">shipment.event.ShipmentCreatedEvent</span></span>
+<span class="line"><span style="color:#24292E">[appuser@1a22052f3675 </span><span style="color:#D73A49">~</span><span style="color:#24292E">]$ kafka-console-consumer --bootstrap-server localhost:9092 --topic shipment.event.ShipmentCreatedEvent --from-beginning</span></span>
+<span class="line"><span style="color:#24292E">{</span><span style="color:#6F42C1">&quot;source&quot;</span><span style="color:#005CC5">:</span><span style="color:#032F62">{}</span><span style="color:#6F42C1">,</span><span style="color:#6F42C1">&quot;timestamp&quot;</span><span style="color:#6F42C1">:1734340362332}</span></span>
+<span class="line"></span></code></pre>
+<p> A fenti példában látható, hogy létrejött a <code>shipment.event.ShipmentCreatedEvent</code> Kafka topic és az esemény is megérkezett. </p>
+<h2 id="forráskód" class="text-2xl font-bold my-2"> Forráskód </h2>
+<p> A példa projekt teljes forráskódja megtalálható a <a href="https://github.com/pbes/modulith-example" href="https://github.com/pbes/modulith-example" class="text-blue-600 after:content-['_↗']" target="_blank" rel="noopener noreferrer"> GitHub-on </a>. Az alkalmazáshoz szükséges függőségek (PostgreSQL, Kafka) a <code>compose.yaml</code> fájlban definiáltak, azok a <code>spring-boot-docker-compose</code> segítségével indulnak és állnak le automatikusan. </p>
+<p> A példa ezen felül tartalmazza még a rendelés törléséhez szükséges logikát: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <code>CancelOrderAction</code>: üzleti logika a törlésre, ha nem létezik vagy már shipped állapotú a rendelés, akkor hiba: nem törölhető </li>
+<li class="mb-1"> <code>OrderCanceledEvent</code>: sikeres törlés esetén ezt az eseményt publikálja </li>
+<li class="mb-1"> <code>OrderCancelledHandler</code>: a <code>shipment</code> package-ben figyeli az eseményt és a hozzá tartozó szállítmányokat is <code>CANCELLED</code> állapotba állítja </li>
+ </ul> </div>  </div> <footer class="bg-gradient-to-t from-orange-50"> <div class="flex flex-row items-center justify-center max-w-screen-md h-96 mx-auto px-4 sm:px-6"> <p class="text-4xl leading-[60px] bg-clip-text text-center text-transparent bg-gradient-to-r from-orange-600 to-amber-600 font-title font-black"> Beszéljünk a technológiáról 🚀 </p> </div> </footer> </div> </body></html> 
