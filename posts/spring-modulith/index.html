@@ -63,6 +63,19 @@
 <span class="line"><span style="color:#24292E">    eventPublisher.</span><span style="color:#6F42C1">publishEvent</span><span style="color:#24292E">(</span><span style="color:#D73A49">new</span><span style="color:#6F42C1"> ShipmentCreatedEvent</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">, savedShipment.</span><span style="color:#6F42C1">getId</span><span style="color:#24292E">()));</span></span>
 <span class="line"><span style="color:#24292E">}</span></span>
 <span class="line"></span></code></pre>
+<p> Ezen felül a Spring Modulith teszt-eszközöket is ad nekünk, melyekkel automatizáltan ellenőrizhetjük a modulok közötti függőségi gráf helyességét: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> ModulesTest</span><span style="color:#24292E"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Test</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> testModuleStructure</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">        final</span><span style="color:#D73A49"> var</span><span style="color:#24292E"> modules </span><span style="color:#D73A49">=</span><span style="color:#24292E"> ApplicationModules.</span><span style="color:#6F42C1">of</span><span style="color:#24292E">(ModulithExampleApplication.class);</span></span>
+<span class="line"><span style="color:#D73A49">        new</span><span style="color:#6F42C1"> Documenter</span><span style="color:#24292E">(modules)</span></span>
+<span class="line"><span style="color:#24292E">                .</span><span style="color:#6F42C1">writeModulesAsPlantUml</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">                .</span><span style="color:#6F42C1">writeIndividualModulesAsPlantUml</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
 <h3 id="aszinkron-események" class="text-xl font-bold my-2"> Aszinkron események </h3>
 <p> A fenti eseménykezelő az eseményt létrehozó kóddal egy közös tranzakcióban fut és amíg nem sikerül lezárni, az eredeti kód sem tud visszatérni az eredménnyel. Lehetőségünk van az <code>@Async</code>, a <code>@TransactionalEventListener</code> és a <code>@Transactional(propagation = Propagation.REQUIRES_NEW)</code> annotációkkal aszinkron, külön tranzakcióban futó eseménykezelővé alakítani: </p>
 <pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Async</span></span>
