@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="en" class="text-zinc-800"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"><!-- Canonical URL --><link rel="canonical" href="https://pbes.github.io/posts/load-balancer-strategiak"><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script><!-- Primary Meta Tags --><title>Load balancer stratégiák · pbes blog</title><meta name="title" content="Load balancer stratégiák · pbes blog"><meta name="description" content="Milyen különböző load balancer stratégiák léteznek, és mikor melyiket érdemes használni"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://pbes.github.io/posts/load-balancer-strategiak"><meta property="og:title" content="Load balancer stratégiák · pbes blog"><meta property="og:description" content="Milyen különböző load balancer stratégiák léteznek, és mikor melyiket érdemes használni"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://pbes.github.io/posts/load-balancer-strategiak"><meta property="twitter:title" content="Load balancer stratégiák · pbes blog"><meta property="twitter:description" content="Milyen különböző load balancer stratégiák léteznek, és mikor melyiket érdemes használni"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><link rel="stylesheet" href="/_astro/about.B12WitEq.css">
+<link rel="stylesheet" href="/_astro/_slug_.D70-yzNw.css"><script type="module" src="/_astro/hoisted.Bk9VN7UM.js"></script>
+<script type="module" src="/_astro/page.BNYwb576.js"></script></head> <body> <div class="flex flex-col h-full mb-8 overflow-y-scroll antialiased"> <header class="sticky z-50 top-0 bg-white/80 backdrop-blur-xl transition-all select-none bg-gradient-to-b from-orange-50"> <div class="flex flex-row gap-8 items-center justify-between max-w-screen-md mx-auto h-24 px-4 sm:px-6"> <a href="/" class="flex flex-row items-center justify-center gap-2"> <img src="/avatar.jpg" alt="author avatar" class="w-10 rounded-full aspect-square"> <span class="text-orange-600 font-title font-black">pbes blog</span> </a> <div class="flex flex-row gap-4" id="menu-items"> <a href="/posts" target="_self" class="h-full text-sm hover:text-orange-700"> Bejegyzések </a><a href="/tags" target="_self" class="h-full text-sm hover:text-orange-700"> Címkék </a><a href="/date" target="_self" class="h-full text-sm hover:text-orange-700"> Archívum </a><a href="/about" target="_self" class="h-full text-sm hover:text-orange-700"> Rólam </a><a href="https://github.com/pbes" target="_blank" class="h-full text-sm hover:text-orange-700"> GitHub </a> </div> </div> </header> <div class="flex-auto">  <div class="flex flex-col gap-8 md:w-5/6 px-4 py-12 sm:px-8 mx-auto"> <div class="flex flex-col gap-6 items-center justify-center max-w-screen-sm mx-auto"> <h1 id="header" class="text-5xl text-center font-title font-black">Load balancer stratégiák</h1> <div class="flex items-center justify-center gap-2"> <a href="/date/2025" target="_self" class="px-2.5 py-1 rounded-lg text-xs bg-zinc-50"> March 7, 2025 </a> <a href="/tags/architecture" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> architecture </a><a href="/tags/Java" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> Java </a><a href="/tags/Spring" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> Spring </a><a href="/tags/nginx" target="_self" class="px-2.5 py-1 rounded-lg text-xs text-red-600 font-medium bg-red-50/80 capitalize"> nginx </a> </div> <p class="text-lg text-center text-zinc-700 max-w-[480px]">Milyen különböző load balancer stratégiák léteznek, és mikor melyiket érdemes használni</p> </div> <img src="/images/load-balancer-strategiak/load-balancer.png?w=1200&#38;q=80" alt="cover" class="w-full max-w-screen-md mx-auto rounded-lg"> </div> <div class="relative flex flex-col gap-2 max-w-screen-md mx-auto px-4 sm:px-6 text-base text-zinc-700"> <h2 id="mik-az-előnyei-a-load-balancernek" class="text-2xl font-bold my-2"> Mik az előnyei a load balancernek? </h2>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Skálázhatóság </strong>: A load balancer segítségével könnyedén skálázhatjuk az alkalmazásunkat: több példányban futtathatjuk és a kliensek egyetlen belépési ponton keresztül tudják elérni. </li>
+<li class="mb-1"> <strong class="font-bold"> Hibatűrés </strong>: Ha egy alkalmazás példány leáll, a load balancer automatikusan átirányítja a kéréseket egy másikra. </li>
+<li class="mb-1"> <strong class="font-bold"> Teljesítmény </strong>: A load balancer képes optimalizálni a kérések elosztását, abban az esetben, ha az egyes alkalmazás példányok különböző terhelés alatt vannak. </li>
+<li class="mb-1"> <strong class="font-bold"> Karbantartás </strong>: A load balancer segítségével könnyedén leállíthatjuk az egyes alkalmazás példányokat karbantartás céljából, anélkül, hogy a felhasználók észrevennék. A kéréseket a kiesés ideje alatt egy másik példányra irányítja. </li>
+ </ul>
+<h2 id="kategóriák" class="text-2xl font-bold my-2"> Kategóriák </h2>
+<p> Logika alapján megkülönböztethetünk <span data-notion-identity="notion" data-notion-type="underline" data-notion-color="blue" data-notion-strokewidth="1.5"> statikus </span> és <span data-notion-identity="notion" data-notion-type="underline" data-notion-color="blue" data-notion-strokewidth="1.5"> dinamikus </span> load balancer-eket. </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Statikus </strong>: a kéréseket előre meghatározott szabályok alapján osztja el az egyes alkalmazás példányok között, futásidejű információk nélkül. </li>
+<li class="mb-1"> <strong class="font-bold"> Dinamikus </strong>: a kéréseket futásidejű információk alapján osztja el az egyes alkalmazás példányok között. </li>
+ </ul>
+<p> A szintek alapján pedig <span data-notion-identity="notion" data-notion-type="underline" data-notion-color="red" data-notion-strokewidth="1.5"> Layer 4 </span> illetve <span data-notion-identity="notion" data-notion-type="underline" data-notion-color="red" data-notion-strokewidth="1.5"> Layer 7 </span> load balancer-eket különböztetünk meg. </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Layer 4 </strong>: a kéréseket a TCP/IP szinten osztja el az egyes alkalmazás példányok között: a kérések IP cím, port és egyéb információk alapján kerülnek elosztásra. </li>
+<li class="mb-1"> <strong class="font-bold"> Layer 7 </strong>: a kéréseket az alkalmazás szintjén osztja el az egyes alkalmazás példányok között: a kérések adattartalma is felhasználásra kerül az elosztási logika során. Lassabb, mint a Layer 4, de sokkal finomabb szabályokat tudunk vele definiálni. </li>
+ </ul>
+<h2 id="load-balancer-algoritmusok" class="text-2xl font-bold my-2"> Load balancer algoritmusok </h2>
+<h3 id="round-robin" class="text-xl font-bold my-2"> Round Robin </h3>
+<p> A Round Robin a legegyszerűbb statikus load balancer algoritmus. A kéréseket sorban osztja el az egyes alkalmazás példányok között. Az első az első példányhoz, a második a másodikhoz, és így tovább. Ha az egyik példány leáll, a következő kérést a következő példányhoz irányítja. Ha N db alkalmazáspéldány elérhető, akkor az N+1. kérés az első példányhoz kerül. </p>
+<p> Előnyök: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Egyszerűség </strong>: A Round Robin algoritmus egyszerűen implementálható. Ezért jó választás ott, ahol nincs szükség kifinomult logikára. </li>
+<li class="mb-1"> <strong class="font-bold"> Méltányosság </strong>: Mivel egyenlően osztja el a kéréseket, minden szerver egyenlő részt kap a terhelésből. Ez előnyös, ha minden szerver hasonló képességekkel rendelkezik. </li>
+<li class="mb-1"> <strong class="font-bold"> Alacsony erőforrásigény </strong>: Az algoritmus nem igényel sok számítási és memória erőforrást, ami jó választássá teszi olyan rendszerekben, ahol ezek az erőforrások korlátozottak. </li>
+<li class="mb-1"> <strong class="font-bold"> Kiszámíthatóság </strong>: Kiszámítható viselkedést kínál, ami megkönnyíti a terheléselosztással kapcsolatos problémák diagnosztizálását, mivel a kérések elosztása egyenletes. </li>
+<li class="mb-1"> <strong class="font-bold"> Gyors válaszidő egyszerű kérések esetén </strong>: Olyan esetekben, amikor minden kérés szinte azonos erőforrásokat igényel, a Round Robin gyors válaszidőt biztosíthat. </li>
+ </ul>
+<p> Hátrányok: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Nem veszi figyelembe a szerverek különböző teljesítményét </strong>: A Round Robin algoritmus nem veszi figyelembe, hogy az egyes szerverek különböző teljesítménnyel rendelkezhetnek. Ez problémát okozhat, ha az egyik szerver lassabb vagy kevésbé erőforrásigényes, mint a többi. </li>
+<li class="mb-1"> <strong class="font-bold"> Nem veszi figyelembe a kérések különböző erőforrásigényét </strong>: Az algoritmus nem veszi figyelembe, hogy egyes kérések több erőforrást igényelhetnek, mint mások. Ez azt eredményezheti, hogy egy szerver túlterheltté válik, míg mások kihasználatlanok maradnak. </li>
+<li class="mb-1"> <strong class="font-bold"> Nem alkalmas dinamikusan változó környezetekben </strong>: A Round Robin algoritmus nem alkalmas olyan környezetekben, ahol a szerverek elérhetősége és teljesítménye dinamikusan változik. Ilyen esetekben egy dinamikus load balancer algoritmus jobb választás lehet. </li>
+ </ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="nginx"><code><span class="line"><span style="color:#D73A49">upstream</span><span style="color:#6F42C1"> backend </span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">    server</span><span style="color:#24292E"> backend1.example.com;</span></span>
+<span class="line"><span style="color:#D73A49">    server</span><span style="color:#24292E"> backend2.example.com;</span></span>
+<span class="line"><span style="color:#D73A49">    server</span><span style="color:#24292E"> backend3.example.com;</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">server</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    listen </span><span style="color:#005CC5">80</span><span style="color:#24292E">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    location</span><span style="color:#6F42C1"> / </span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_pass </span><span style="color:#24292E">http://backend;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">Host $host;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Real-IP $remote_addr;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Forwarded-For $proxy_add_x_forwarded_for;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Forwarded-Proto $scheme;</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h3 id="weighted-round-robin" class="text-xl font-bold my-2"> Weighted Round Robin </h3>
+<p> A sima Round Robin algoritmus egyenlően osztja el a kéréseket az egyes szerverek között. A Weighted Round Robin algoritmus ezzel szemben súlyozza az egyes szervereket, hogy azok különböző terhelés alatt legyenek. Például, ha az első szerver 2-szer erősebb, mint a második, akkor az első szerver 2-szer több kérést fog kapni, mint a második. </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="nginx"><code><span class="line"><span style="color:#D73A49">upstream</span><span style="color:#6F42C1"> backend </span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">    server</span><span style="color:#24292E"> backend1.example.com </span><span style="color:#E36209">weight</span><span style="color:#D73A49">=</span><span style="color:#005CC5">3</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">    server backend2.example.com </span><span style="color:#E36209">weight</span><span style="color:#D73A49">=</span><span style="color:#005CC5">1</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">    server backend3.example.com </span><span style="color:#E36209">weight</span><span style="color:#D73A49">=</span><span style="color:#005CC5">2</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">server {</span></span>
+<span class="line"><span style="color:#24292E">    listen </span><span style="color:#005CC5">80</span><span style="color:#24292E">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    location</span><span style="color:#6F42C1"> / </span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_pass </span><span style="color:#24292E">http://backend;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">Host $host;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Real-IP $remote_addr;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Forwarded-For $proxy_add_x_forwarded_for;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Forwarded-Proto $scheme;</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h3 id="least-connections" class="text-xl font-bold my-2"> Least Connections </h3>
+<p> A Least Connections egy a RR-nál bonyolultabb dinamikus algoritmus. A load balancer figyelemmel kíséri a szerverekhez kiosztott aktív kapcsolatok számát. Az új kéréseket mindig az adott pillanatban legkevesebb kapcsolattal rendelkező szerverre irányítja. </p>
+<p> Előnyök: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Intelligensebb irányítás </strong>: A Least Connections figyelembe veszi az aktuális szerverterhelést (legalábbis az aktív kapcsolatok számát tekintve), így jobban alkalmazkodik a változó terheléshez. </li>
+<li class="mb-1"> <strong class="font-bold"> Jobb a változó kéréskomplexitás esetén </strong>: Ez a módszer jobban működik, ha a kérések különböző mennyiségű erőforrást igényelnek, mivel célja az egyenletesebb terheléselosztás az aktív kapcsolatok alapján, ami gyakran jobb terhelésmérő, mint az egyszerű Round Robin. </li>
+<li class="mb-1"> <strong class="font-bold"> Jó hosszú élettartamú kapcsolatokhoz </strong>: Olyan környezetekben, ahol a kapcsolatok hosszú élettartamúak (pl. WebSockets, streaming szolgáltatások), a Least Connections idővel kiegyensúlyozottabb kapcsolatelosztást kínálhat. </li>
+<li class="mb-1"> <strong class="font-bold"> Idővel javul </strong>: Minél tovább fut, annál jobb lesz a terheléselosztásban, mivel folyamatosan alkalmazkodik a szerver pool aktuális állapotához. </li>
+ </ul>
+<p> Hátrányok: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Nem veszi figyelembe a feladatok összetettségét </strong>: Bár a Least Connections módszer figyelembe veszi az aktív kapcsolatok számát, nem veszi figyelembe az egyes szerverek által kezelt feladatok számítási összetettségét. Egy szerver kevesebb, de erőforrás-igényesebb feladatokat is kezelhet, és mégis új kéréseket kaphat. </li>
+<li class="mb-1"> <strong class="font-bold"> Nagyobb erőforrásigény </strong>: Az aktív kapcsolatok valós idejű nyilvántartása minden szerver esetében nagyobb számítási terhelést jelent, összehasonlítva az egyszerűbb algoritmusokkal, mint például a Round Robin. </li>
+<li class="mb-1"> <strong class="font-bold"> Potenciálisan nem optimális kihasználás </strong>: Ha a szerverek különböző kapacitásúak, a legkevésbé képes szerver ugyanannyi kérést kaphat, mint a legjobban teljesítő szerver, ami nem optimális erőforrás-kihasználást eredményezhet. </li>
+<li class="mb-1"> <strong class="font-bold"> Kezdeti egyensúlyhiány </strong>: Bizonyos beállításoknál, amikor minden szervernek nulla vagy ugyanannyi kapcsolata van, az első néhány kérés mind ugyanarra a szerverre kerülhet, ami átmeneti egyensúlyhiányt okozhat. </li>
+ </ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="nginx"><code><span class="line"><span style="color:#D73A49">upstream</span><span style="color:#6F42C1"> backend </span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">    least_conn</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#D73A49">    server</span><span style="color:#24292E"> backend1.example.com;</span></span>
+<span class="line"><span style="color:#D73A49">    server</span><span style="color:#24292E"> backend2.example.com;</span></span>
+<span class="line"><span style="color:#D73A49">    server</span><span style="color:#24292E"> backend3.example.com;</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">server</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    listen </span><span style="color:#005CC5">80</span><span style="color:#24292E">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    location</span><span style="color:#6F42C1"> / </span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_pass </span><span style="color:#24292E">http://backend;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">Host $host;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Real-IP $remote_addr;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Forwarded-For $proxy_add_x_forwarded_for;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Forwarded-Proto $scheme;</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h3 id="weighted-least-connections" class="text-xl font-bold my-2"> Weighted Least Connections </h3>
+<p> A Weighted Least Connections algoritmus a Least Connections algoritmus egy változata, amely súlyozza az egyes szervereket. Például, ha az első szerver 2-szer erősebb, mint a második, akkor az első szerver 2-szer több kapcsolatot fog kapni, mint a második. </p>
+<p> Mind a Weighted Round Robin, mind a Weighted Least Connections algoritmusok lehetővé teszik a szerverek súlyozását, hogy azok különböző terhelés alatt legyenek, azonban ez sokszor manuális monitorozást és finomhangolást igényelhet. Amennyiben a súlyokat nem megfelelően állítjuk be, az egyes szerverek túlterhelhetnek vagy alulterhelhetnek lehetnek. </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="nginx"><code><span class="line"><span style="color:#D73A49">upstream</span><span style="color:#6F42C1"> backend </span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">    least_conn</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#D73A49">    server</span><span style="color:#24292E"> backend1.example.com </span><span style="color:#E36209">weight</span><span style="color:#D73A49">=</span><span style="color:#005CC5">3</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">    server backend2.example.com </span><span style="color:#E36209">weight</span><span style="color:#D73A49">=</span><span style="color:#005CC5">1</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">    server backend3.example.com </span><span style="color:#E36209">weight</span><span style="color:#D73A49">=</span><span style="color:#005CC5">2</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">server {</span></span>
+<span class="line"><span style="color:#24292E">    listen </span><span style="color:#005CC5">80</span><span style="color:#24292E">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    location</span><span style="color:#6F42C1"> / </span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_pass </span><span style="color:#24292E">http://backend;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">Host $host;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Real-IP $remote_addr;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Forwarded-For $proxy_add_x_forwarded_for;</span></span>
+<span class="line"><span style="color:#D73A49">        proxy_set_header </span><span style="color:#24292E">X-Forwarded-Proto $scheme;</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h3 id="resource-based-load-balancing" class="text-xl font-bold my-2"> Resource Based Load Balancing </h3>
+<p> A Resource Based Load Balancing egy olyan stratégia, amely figyelembe veszi az egyes szerverek rendelkezésre álló erőforrásait (CPU terhelés, memóriahasználat, hálózati I/O stb.) a bejövő kérések elosztása előtt. Ez a megközelítés arra törekszik, hogy minden szerver terhelése megfeleljen az elérhető erőforrásainak, ami jobb teljesítményt és kihasználtságot eredményez. </p>
+<p> Előnyök: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Optimalizált erőforrás-kihasználás </strong>: Az erőforrások figyelembevételével a kérések elosztása optimalizáltabb, így minden szerver a lehető legjobban kihasználható. </li>
+<li class="mb-1"> <strong class="font-bold"> Jobb teljesítmény </strong>: Az erőforrásokhoz igazított terheléselosztás jobb teljesítményt eredményezhet, mivel a szerverek nem lesznek túlterheltek. </li>
+<li class="mb-1"> <strong class="font-bold"> Rugalmas alkalmazkodás </strong>: A dinamikusan változó erőforrásokhoz való alkalmazkodás lehetővé teszi a rendszer számára, hogy jobban kezelje a változó terhelést. </li>
+ </ul>
+<p> Hátrányok: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Komplexitás </strong>: Az erőforrások valós idejű monitorozása és a kérések ennek megfelelő elosztása bonyolultabb, mint az egyszerűbb algoritmusok. </li>
+<li class="mb-1"> <strong class="font-bold"> Erőforrásigény </strong>: Az erőforrások figyelemmel kísérése és a kérések dinamikus elosztása nagyobb számítási és memória erőforrást igényelhet. </li>
+<li class="mb-1"> <strong class="font-bold"> Konfiguráció és karbantartás </strong>: Az ilyen típusú load balancer konfigurálása és karbantartása több időt és szakértelmet igényelhet. </li>
+ </ul>
+<p> Nginx esetén Lua szkripttekkel tudjuk megvalósítani ezt a stratégiát, Spring Boot Spring Gateway esetén pedig: </p>
+<p> Készítenünk kell egy saját load balancert: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> ResourceUsageBasedLoadBalancer</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> ReactorLoadBalancer</span><span style="color:#24292E">&lt;</span><span style="color:#D73A49">ServiceInstance</span><span style="color:#24292E">&gt; {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> final</span><span style="color:#24292E"> ServiceInstanceListSupplier serviceInstanceListSupplier;</span></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> final</span><span style="color:#24292E"> String serviceId;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#6F42C1"> ResourceUsageBasedLoadBalancer</span><span style="color:#24292E">(ServiceInstanceListSupplier </span><span style="color:#E36209">serviceInstanceListSupplier</span><span style="color:#24292E">, String </span><span style="color:#E36209">serviceId</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#005CC5">        this</span><span style="color:#24292E">.serviceInstanceListSupplier </span><span style="color:#D73A49">=</span><span style="color:#24292E"> serviceInstanceListSupplier;</span></span>
+<span class="line"><span style="color:#005CC5">        this</span><span style="color:#24292E">.serviceId </span><span style="color:#D73A49">=</span><span style="color:#24292E"> serviceId;</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#24292E"> Mono&lt;Response&lt;</span><span style="color:#D73A49">ServiceInstance</span><span style="color:#24292E">&gt;&gt; </span><span style="color:#6F42C1">choose</span><span style="color:#24292E">(Request </span><span style="color:#E36209">request</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> serviceInstanceListSupplier.</span><span style="color:#6F42C1">get</span><span style="color:#24292E">().</span><span style="color:#6F42C1">next</span><span style="color:#24292E">().</span><span style="color:#6F42C1">map</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#D73A49">::</span><span style="color:#24292E">getInstanceWithLeastResourceUsage);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#24292E"> Response&lt;</span><span style="color:#D73A49">ServiceInstance</span><span style="color:#24292E">&gt; </span><span style="color:#6F42C1">getInstanceWithLeastResourceUsage</span><span style="color:#24292E">(List&lt;</span><span style="color:#D73A49">ServiceInstance</span><span style="color:#24292E">&gt; </span><span style="color:#E36209">instances</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // Itt kell implementálni a logikát, hogy kiválassza a legkevesebb erőforrást használó példányt</span></span>
+<span class="line"><span style="color:#6A737D">        // Demonstációként véletlenszerűen választunk</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> (instances.</span><span style="color:#6F42C1">isEmpty</span><span style="color:#24292E">()) {</span></span>
+<span class="line"><span style="color:#D73A49">            return</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> EmptyResponse</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#24292E">        ServiceInstance instance </span><span style="color:#D73A49">=</span><span style="color:#24292E"> instances.</span><span style="color:#6F42C1">get</span><span style="color:#24292E">(</span><span style="color:#D73A49">new</span><span style="color:#6F42C1"> Random</span><span style="color:#24292E">().</span><span style="color:#6F42C1">nextInt</span><span style="color:#24292E">(instances.</span><span style="color:#6F42C1">size</span><span style="color:#24292E">()));</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> DefaultResponse</span><span style="color:#24292E">(instance);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> <strong class="font-bold"> Regisztráljuk a load balancerünket: </strong> </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Configuration</span></span>
+<span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">LoadBalancerClient</span><span style="color:#24292E">(</span><span style="color:#005CC5">name</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> &quot;example-service&quot;</span><span style="color:#24292E">, </span><span style="color:#005CC5">configuration</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> CustomLoadBalancerConfiguration.class)</span></span>
+<span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> CustomLoadBalancerConfiguration</span><span style="color:#24292E"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Bean</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#24292E"> ReactorLoadBalancer&lt;</span><span style="color:#D73A49">ServiceInstance</span><span style="color:#24292E">&gt; </span><span style="color:#6F42C1">reactorServiceInstanceLoadBalancer</span><span style="color:#24292E">(Environment </span><span style="color:#E36209">environment</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">                                                                                   LoadBalancerClientFactory </span><span style="color:#E36209">loadBalancerClientFactory</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        String name </span><span style="color:#D73A49">=</span><span style="color:#24292E"> environment.</span><span style="color:#6F42C1">getProperty</span><span style="color:#24292E">(LoadBalancerClientFactory.PROPERTY_NAME);</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> ResourceUsageBasedLoadBalancer</span><span style="color:#24292E">(loadBalancerClientFactory.</span><span style="color:#6F42C1">getLazyProvider</span><span style="color:#24292E">(name, ServiceInstanceListSupplier.class), name);</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> A gateway konfigurációjában az adott route-okra be kell állítani ennek a load balancernek a használatát: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#22863A">spring</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">  cloud</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">    gateway</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">      routes</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#24292E">        - </span><span style="color:#22863A">id</span><span style="color:#24292E">: </span><span style="color:#032F62">example-service</span></span>
+<span class="line"><span style="color:#22863A">          uri</span><span style="color:#24292E">: </span><span style="color:#032F62">lb://example-service</span></span>
+<span class="line"><span style="color:#22863A">          predicates</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#24292E">            - </span><span style="color:#032F62">Path=/example/**</span></span>
+<span class="line"><span style="color:#22863A">          filters</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#24292E">            - </span><span style="color:#032F62">RewritePath=/example/(?&lt;remaining&gt;.*), /$\{remaining}</span></span>
+<span class="line"><span style="color:#22863A">          metadata</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">            lb</span><span style="color:#24292E">: </span><span style="color:#032F62">custom</span></span>
+<span class="line"></span></code></pre>
+<p> Vagy Java kódban: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Bean</span></span>
+<span class="line"><span style="color:#D73A49">public</span><span style="color:#24292E"> RouteLocator </span><span style="color:#6F42C1">customRouteLocator</span><span style="color:#24292E">(RouteLocatorBuilder builder) {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#24292E"> builder.</span><span style="color:#6F42C1">routes</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">            .</span><span style="color:#6F42C1">route</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;example-service&quot;</span><span style="color:#24292E">, r </span><span style="color:#D73A49">-&gt;</span><span style="color:#24292E"> r.</span><span style="color:#6F42C1">path</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;/example/**&quot;</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">                    .</span><span style="color:#6F42C1">filters</span><span style="color:#24292E">(f </span><span style="color:#D73A49">-&gt;</span><span style="color:#24292E"> f.</span><span style="color:#6F42C1">rewritePath</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;/example/(?&lt;remaining&gt;.*)&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;/${remaining}&quot;</span><span style="color:#24292E">))</span></span>
+<span class="line"><span style="color:#24292E">                    .</span><span style="color:#6F42C1">uri</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;lb://example-service&quot;</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">                    .</span><span style="color:#6F42C1">metadata</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;lb&quot;</span><span style="color:#24292E">, </span><span style="color:#032F62">&quot;custom&quot;</span><span style="color:#24292E">))</span></span>
+<span class="line"><span style="color:#24292E">            .</span><span style="color:#6F42C1">build</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h3 id="ipurllocation-alapú-hash" class="text-xl font-bold my-2"> IP/URL/location alapú Hash </h3>
+<p> A bejövő kéréseket valamely paraméterük alapján fix darabszámú csoportba (bucket) helyezi. Az egyes csoportokba tartozó kéréseket egy-egy szerverre irányítja. Például, ha az IP cím alapján osztjuk el a kéréseket, akkor azonos IP című kérések mindig ugyanarra a szerverre kerülnek. </p>
+<p> Előnyök: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Sebesség vs memória </strong>: Egy nagyobb hash tábla csökkenti az ütközések számát, de több memóriát használ. Ezzel szemben egy kisebb tábla kevesebb memóriát használ, de hajlamosabb az ütközésekre, amelyek megoldása további időt igényel. </li>
+<li class="mb-1"> <strong class="font-bold"> Egyszerű vs összetett függvények </strong>: Az egyszerű hash függvények általában gyorsabbak, de több ütközést eredményezhetnek. Az összetett vagy kriptográfiai függvények csökkentik az ütközés vagy a visszafejtés kockázatát, de számításigényesebbek. </li>
+ </ul>
+<p> Hátrányok: </p>
+<ul class="list-disc ml-6"> 
+<li class="mb-1"> <strong class="font-bold"> Ütközés </strong>: Két különböző kulcs ugyanazt a hash értéket eredményezheti, amit ütközésnek nevezünk. A hash táblák általában rendelkeznek mechanizmusokkal ennek kezelésére, mint például láncolás vagy nyílt címzés, de ez növeli a komplexitást. </li>
+<li class="mb-1"> <strong class="font-bold"> Nem visszafejthető </strong>: A hash-elés egy egyirányú függvény. Ha az adatokat egyszer hash-eltük, nem lehet visszanyerni az eredeti adatokat a hash kódból. </li>
+<li class="mb-1"> <strong class="font-bold"> Korlátozott biztonság </strong>: A hagyományos hash függvények nem biztonságosak, ami azt jelenti, hogy valaki potenciálisan kitalálhatja a kulcsot a hash érték alapján, különösen, ha a kulcsok halmaza kicsi. </li>
+<li class="mb-1"> <strong class="font-bold"> Hely-idő kompromisszum </strong>: A hash táblák extra memóriát igényelnek a tároláshoz, hogy csökkentsék az ütközés esélyét. Ha a tábla mérete kicsi, az ütközés esélye nagyobb, ami csökkenti a hatékonyságot. </li>
+<li class="mb-1"> <strong class="font-bold"> Nem rendezett </strong>: A hash táblák nem tárolják a kulcsokat semmilyen különös sorrendben, ami hátrány, ha tartomány lekérdezéseket vagy rendezett műveleteket kell végrehajtani. </li>
+ </ul>
+<p> Az alábbi példában geolokáció alapján route-oljuk a kéréseket a megfelelő, ország-specifikus alkalmazáspéldányokhoz: </p>
+<p> Vegyük fel a GeoIP (IP - ország összerendelés) függőséget a <code>ṗom.xml</code>-be: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#24292E">&lt;</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">    &lt;</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;com.maxmind.geoip2&lt;/</span><span style="color:#22863A">groupId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">    &lt;</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;geoip2&lt;/</span><span style="color:#22863A">artifactId</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">    &lt;</span><span style="color:#22863A">version</span><span style="color:#24292E">&gt;2.15.0&lt;/</span><span style="color:#22863A">version</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"><span style="color:#24292E">&lt;/</span><span style="color:#22863A">dependency</span><span style="color:#24292E">&gt;</span></span>
+<span class="line"></span></code></pre>
+<p> Készítsünk egy geolikáció alapú szűrőt, amely az IP cím által kijelölt ország alapján választja ki a backend példányt: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Component</span></span>
+<span class="line"><span style="color:#D73A49">public</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> GeoLocationFilter</span><span style="color:#D73A49"> extends</span><span style="color:#6F42C1"> AbstractGatewayFilterFactory</span><span style="color:#24292E">&lt;</span><span style="color:#D73A49">GeoLocationFilter</span><span style="color:#24292E">.</span><span style="color:#D73A49">Config</span><span style="color:#24292E">&gt; {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#D73A49"> final</span><span style="color:#24292E"> DatabaseReader dbReader;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#6F42C1"> GeoLocationFilter</span><span style="color:#24292E">(@</span><span style="color:#D73A49">Value</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;classpath:GeoLite2-City.mmdb&quot;</span><span style="color:#24292E">) Resource </span><span style="color:#E36209">geoLite2City</span><span style="color:#24292E">) </span><span style="color:#D73A49">throws</span><span style="color:#24292E"> IOException {</span></span>
+<span class="line"><span style="color:#005CC5">        this</span><span style="color:#24292E">.dbReader </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#24292E"> DatabaseReader.</span><span style="color:#6F42C1">Builder</span><span style="color:#24292E">(geoLite2City.</span><span style="color:#6F42C1">getInputStream</span><span style="color:#24292E">()).</span><span style="color:#6F42C1">build</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    @</span><span style="color:#D73A49">Override</span></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#24292E"> GatewayFilter </span><span style="color:#6F42C1">apply</span><span style="color:#24292E">(Config </span><span style="color:#E36209">config</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> (exchange, chain) </span><span style="color:#D73A49">-&gt;</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">            ServerHttpRequest request </span><span style="color:#D73A49">=</span><span style="color:#24292E"> exchange.</span><span style="color:#6F42C1">getRequest</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">            String clientIp </span><span style="color:#D73A49">=</span><span style="color:#24292E"> request.</span><span style="color:#6F42C1">getRemoteAddress</span><span style="color:#24292E">().</span><span style="color:#6F42C1">getAddress</span><span style="color:#24292E">().</span><span style="color:#6F42C1">getHostAddress</span><span style="color:#24292E">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">            try</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">                InetAddress ipAddress </span><span style="color:#D73A49">=</span><span style="color:#24292E"> InetAddress.</span><span style="color:#6F42C1">getByName</span><span style="color:#24292E">(clientIp);</span></span>
+<span class="line"><span style="color:#24292E">                CityResponse response </span><span style="color:#D73A49">=</span><span style="color:#24292E"> dbReader.</span><span style="color:#6F42C1">city</span><span style="color:#24292E">(ipAddress);</span></span>
+<span class="line"><span style="color:#24292E">                Country country </span><span style="color:#D73A49">=</span><span style="color:#24292E"> response.</span><span style="color:#6F42C1">getCountry</span><span style="color:#24292E">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">                // Route based on country</span></span>
+<span class="line"><span style="color:#D73A49">                if</span><span style="color:#24292E"> (</span><span style="color:#032F62">&quot;US&quot;</span><span style="color:#24292E">.</span><span style="color:#6F42C1">equals</span><span style="color:#24292E">(country.</span><span style="color:#6F42C1">getIsoCode</span><span style="color:#24292E">())) {</span></span>
+<span class="line"><span style="color:#D73A49">                    return</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.</span><span style="color:#6F42C1">routeTo</span><span style="color:#24292E">(exchange, chain, </span><span style="color:#032F62">&quot;http://us.example.com&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">                } </span><span style="color:#D73A49">else</span><span style="color:#D73A49"> if</span><span style="color:#24292E"> (</span><span style="color:#032F62">&quot;CA&quot;</span><span style="color:#24292E">.</span><span style="color:#6F42C1">equals</span><span style="color:#24292E">(country.</span><span style="color:#6F42C1">getIsoCode</span><span style="color:#24292E">())) {</span></span>
+<span class="line"><span style="color:#D73A49">                    return</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.</span><span style="color:#6F42C1">routeTo</span><span style="color:#24292E">(exchange, chain, </span><span style="color:#032F62">&quot;http://ca.example.com&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">                } </span><span style="color:#D73A49">else</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">                    return</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.</span><span style="color:#6F42C1">routeTo</span><span style="color:#24292E">(exchange, chain, </span><span style="color:#032F62">&quot;http://default.example.com&quot;</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#24292E">                }</span></span>
+<span class="line"><span style="color:#24292E">            } </span><span style="color:#D73A49">catch</span><span style="color:#24292E"> (Exception </span><span style="color:#E36209">e</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">                e.</span><span style="color:#6F42C1">printStackTrace</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#D73A49">                return</span><span style="color:#24292E"> chain.</span><span style="color:#6F42C1">filter</span><span style="color:#24292E">(exchange);</span></span>
+<span class="line"><span style="color:#24292E">            }</span></span>
+<span class="line"><span style="color:#24292E">        };</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    private</span><span style="color:#24292E"> Mono&lt;</span><span style="color:#D73A49">Void</span><span style="color:#24292E">&gt; </span><span style="color:#6F42C1">routeTo</span><span style="color:#24292E">(ServerWebExchange </span><span style="color:#E36209">exchange</span><span style="color:#24292E">, GatewayFilterChain </span><span style="color:#E36209">chain</span><span style="color:#24292E">, String </span><span style="color:#E36209">uri</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#24292E">        ServerHttpRequest request </span><span style="color:#D73A49">=</span><span style="color:#24292E"> exchange.</span><span style="color:#6F42C1">getRequest</span><span style="color:#24292E">().</span><span style="color:#6F42C1">mutate</span><span style="color:#24292E">().</span><span style="color:#6F42C1">uri</span><span style="color:#24292E">(URI.</span><span style="color:#6F42C1">create</span><span style="color:#24292E">(uri)).</span><span style="color:#6F42C1">build</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> chain.</span><span style="color:#6F42C1">filter</span><span style="color:#24292E">(exchange.</span><span style="color:#6F42C1">mutate</span><span style="color:#24292E">().</span><span style="color:#6F42C1">request</span><span style="color:#24292E">(request).</span><span style="color:#6F42C1">build</span><span style="color:#24292E">());</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    public</span><span style="color:#D73A49"> static</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> Config</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // Configuration properties if needed</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<p> Az <code>application.yml</code>-ben az adott route-ra regisztráljuk ezt a szűrőt: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#22863A">spring</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">  cloud</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">    gateway</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#22863A">      routes</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#24292E">        - </span><span style="color:#22863A">id</span><span style="color:#24292E">: </span><span style="color:#032F62">geo-location-route</span></span>
+<span class="line"><span style="color:#22863A">          uri</span><span style="color:#24292E">: </span><span style="color:#032F62">http://default.example.com</span></span>
+<span class="line"><span style="color:#22863A">          predicates</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#24292E">            - </span><span style="color:#032F62">Path=/example/**</span></span>
+<span class="line"><span style="color:#22863A">          filters</span><span style="color:#24292E">:</span></span>
+<span class="line"><span style="color:#24292E">            - </span><span style="color:#22863A">name</span><span style="color:#24292E">: </span><span style="color:#032F62">GeoLocationFilter</span></span>
+<span class="line"></span></code></pre>
+<p> Az alkalmazásunkban példányosítsuk, hogy elérhető legyen: </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="java"><code><span class="line"><span style="color:#24292E">@</span><span style="color:#D73A49">Bean</span></span>
+<span class="line"><span style="color:#D73A49">public</span><span style="color:#24292E"> GeoLocationFilter </span><span style="color:#6F42C1">geoLocationFilter</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> GeoLocationFilter</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="összegzés" class="text-2xl font-bold my-2"> Összegzés </h2>
+<p> A load balancing stratégiák kulcsfontosságúak az erőforrások hatékony kihasználása, az átbocsátóképesség maximalizálása, a késleltetés csökkentése és a hibatűrés elérése érdekében elosztott rendszerekben. Minden stratégia saját előnyökkel, hátrányokkal és kompromisszumokkal jár, ezért alapos megfontolást igényel, hogy az adott igényeknek megfelelőt válasszuk ki. </p>
+<p> Hasonlóképpen, bár nem terheléselosztási módszer, a rate limiting kiegészítő mechanizmusként szolgálhat az erőforrások védelmére és a méltányos használat biztosítására. Legyen szó kis méretű hobbiprojekt tervezéséről vagy globális, nagy forgalmú szolgáltatásról, ezeknek a terheléselosztási technikáknak a megértése kulcsfontosságú a megbízható, hatékony és felhasználóbarát rendszerek építéséhez. </p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span></span></span></code></pre> </div>  </div> <footer class="bg-gradient-to-t from-orange-50"> <div class="flex flex-row items-center justify-center max-w-screen-md h-96 mx-auto px-4 sm:px-6"> <p class="text-4xl leading-[60px] bg-clip-text text-center text-transparent bg-gradient-to-r from-orange-600 to-amber-600 font-title font-black"> Beszéljünk a technológiáról 🚀 </p> </div> </footer> </div> </body></html> 
